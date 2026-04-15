@@ -3,7 +3,6 @@ from datetime import datetime
 
 from ui.kata_log import KataLogPage
 from ui.dashboard import DashboardPage
-from ui.habits import HabitsPage
 from ui.weekly_review import WeeklyReviewPage
 
 ctk.set_appearance_mode("dark")
@@ -82,7 +81,7 @@ class App(ctk.CTk):
 
         ctk.CTkLabel(
             self.sidebar,
-            text="Dev Assistant",
+            text="KataLog",
             font=ctk.CTkFont(size=15, weight="bold"),
         ).pack(pady=(24,20), padx=16, anchor="w")
 
@@ -90,9 +89,9 @@ class App(ctk.CTk):
 
         nav_items=[
             ("dashboard"," Dashboard"),
-            ("journal", " Journal"),
-            ("habits", " Habits"),
-            ("review", " Weekly Review")
+            ("journal", " Your Taka"),
+            ("review", " Review"),
+            ("review", " Your Profile"),
         ]
         
         for key, label in nav_items:
@@ -137,7 +136,6 @@ class App(ctk.CTk):
         self.pages:dict[str,ctk.CTkFrame]={
             "dashboard":DashboardPage(self.content_area),
             "journal":KataLogPage(self.content_area),
-            "habits":HabitsPage(self.content_area),
             "review":WeeklyReviewPage(self.content_area)
         }
         for page in self.pages.values():

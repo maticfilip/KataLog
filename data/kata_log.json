@@ -6,5 +6,21 @@
     "difficulty": "7kyu",
     "status": "Struggled",
     "notes": "Ovo je samo test neki"
+  },
+  {
+    "id": "20260414-094213",
+    "timestamp": "2026-04-14 09:42:13",
+    "kata_name": "Test neceg",
+    "difficulty": "5kyu",
+    "status": "Gave up",
+    "notes": "TESTIRAM NESTO EVO"
+  },
+  {
+    "id": "20260414-170601",
+    "timestamp": "2026-04-14 17:06:01",
+    "kata_name": "o",
+    "difficulty": "6kyu",
+    "status": "Gave up",
+    "notes": ""
   }
 ]

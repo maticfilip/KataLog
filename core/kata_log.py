@@ -1,6 +1,6 @@
 import json
 import os
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 KATA_FILE="data/kata_log.json"
 
@@ -52,3 +52,26 @@ def group_by_day(entries):
         groups[day].append(entry)
     return groups
 
+def get_stats():
+    entries=load()
+    today=str(date.today())
+    this_week=[
+        e for e in entries
+        if (date.today() - date.fromisoformat(e["timestamp"][:10])).days<7
+    ]
+
+    return {
+        "total":len(entries),
+        "this_week":len(this_week),
+        "done_today":any(e["timestamp"][:10]==today for e in entries)
+    }
+
+def get_streak():
+    entries=load()
+    today=date.today()
+    result=[]
+    for i in range(15,-1,-1):
+        day=str(today-timedelta(days=i))
+        did_kata=any(e["timestamp"][:10]==day for e in entries)
+        result.append(did_kata)
+    return result

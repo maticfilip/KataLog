@@ -1,10 +1,25 @@
 import customtkinter as ctk
-from core.habits import get_habits,get_last_7_days
+from core.kata_log import get_streak, get_stats
 from datetime import date
 
 class DashboardPage(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, fg_color="transparent",**kwargs)
+
+        intro_frame=ctk.CTkFrame(self, fg_color="transparent")
+        intro_frame.pack(fill="x", pady=(0,12))
+        intro_frame.grid_columnconfigure((0,1,2), weight=1)
+
+        ctk.CTkLabel(
+            intro_frame,
+            text="KataLog",
+            font=ctk.CTkFont(size=15, weight="bold"),
+        ).pack(padx=16, anchor="w")
+        ctk.CTkLabel(
+            intro_frame,
+            text="Unofficial helper app for your CodeWars experience",
+            font=ctk.CTkFont(size=12),
+        ).pack(padx=16, anchor="w")
 
         stats_frame=ctk.CTkFrame(self, fg_color="transparent")
         stats_frame.pack(fill="x", pady=(0,12))
@@ -84,76 +99,49 @@ class DashboardPage(ctk.CTkFrame):
                 font=ctk.CTkFont(size=11),
                 fg_color=("#DDDAFC", "#3D3780"),
                 text_color=("#3D3780", "#DDDAFC"),
-                # corner_radius=99,
             ).pack(anchor="w", padx=10, pady=(0, 8))
 
         #-----------------#
 
-        todays_habits=ctk.CTkFrame(self)
-        todays_habits.pack(fill="x")
 
-        ctk.CTkLabel(
-            todays_habits,
-            text="Today's habits",
-            font=ctk.CTkFont(size=11),
-            text_color="gray60"
-        ).pack(anchor="w", padx=14, pady=(12,6))
+        streak_card=ctk.CTkFrame(self)
+        streak_card.pack(fill="x", pady=(12,0))
 
-        today=str(date.today())
-        raw_habits=get_habits()
-        habits=[]
-        for h in raw_habits:
-            name=h["name"]
-            history=h["history"]
-            history_bools=get_last_7_days(h)
-            history_bools=history_bools[:7]
-            done_today=today in h["history"]
-            habits.append((name, history_bools, done_today))
+        ctk.CTkLabel(streak_card, text="DAILY STREAK", font=ctk.CTkFont(size=11), text_color="gray60").pack(anchor="w",padx=14, pady=(12,8))
 
-        for name, history, done_today in habits:
-            row=ctk.CTkFrame(todays_habits, fg_color="gray17", corner_radius=8)
-            row.pack(fill="x", padx=14,pady=(0,8))
+        streak_row=ctk.CTkFrame(streak_card, fg_color="transparent")
+        streak_row.pack(anchor="w", padx=14, pady=(0,12))
 
-            left=ctk.CTkFrame(row, fg_color="transparent")
-            left.pack(side="left", padx=12, pady=10)
+        days=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
+        streak=get_streak()
 
-            ctk.CTkLabel(
-                left, text=name, font=ctk.CTkFont(size=13)
-            ).pack(anchor="w")
+        today_weekday=date.today().weekday()
+        day_labels=[]
+        for i in range(7):
+            offset=i-6
+            idx=(today_weekday+offset)%7
+            day_labels.append(days[idx])
 
-            dots_frame=ctk.CTkFrame(left,fg_color="transparent")
-            dots_frame.pack(anchor="w",pady=(4,0))
+        for i, (did, label) in enumerate(zip(streak, day_labels)):
+            col=ctk.CTkFrame(streak_row, fg_color="transparent")
+            col.pack(side="left", padx=(0,12))
 
-            for did in history:
-                color="#534AB7" if did else "gray30"
-                dot=ctk.CTkFrame(
-                    dots_frame,
-                    width=8, height=8,
-                    corner_radius=2,
-                    fg_color=color
-                )
-                dot.pack(side="left", padx=(0,3))
-                dot.pack_propagate(False)
+            color="#534AB7" if did else "gray30"
+            dot=ctk.CTkFrame(col,width=28,height=28, corner_radius=6, fg_color=color)
+            dot.pack()
+            dot.pack_propagate(False)
 
-
-            check_color="#534AB7" if done_today else "gray30"
-            check=ctk.CTkFrame(
-                row,
-                width=22,height=22,
-                corner_radius=11,
-                fg_color=check_color,
-                border_width=0
-            )
-
-            check.pack(side="right", padx=14)
-            check.pack_propagate(False)
-
-            if done_today:
+            if did:
                 ctk.CTkLabel(
-                    check, text="✓",
-                    font=ctk.CTkFont(size=12, weight="bold"),
+                    dot, text="✓",
+                    font=ctk.CTkFont(size=13, weight="bold"),
                     text_color="white"
-                ).place(relx=0.5,rely=0.5, anchor="center")
+                ).place(relx=0.5, rely=0.5, anchor="center")
+            ctk.CTkLabel(
+                col, text=label,
+                font=ctk.CTkFont(size=10), text_color="gray50"
+            ).pack(pady=(4, 0))
+
 
 
 
