@@ -55,9 +55,50 @@ def build_entry_row(parent, entry: dict):
         font=ctk.CTkFont(size=11), text_color="gray50",
     ).pack(side="right")
 
+    menu_frame=ctk.CTkFrame(top, fg_color="gray25", corner_radius=6)
+    dots_btn=ctk.CTkButton(
+        top, text="•••",width=28, height=22, fg_color="transparent",
+        hover_color="gray30",text_color="gray50", font=ctk.CTkFont(size=12),
+        corner_radius=4, command=lambda:toggle_menu(row, menu_frame,entry)
+    )
+    dots_btn.pack(side="right")
+
     if entry.get("notes"):
         ctk.CTkLabel(
             content, text=entry["notes"],
             font=ctk.CTkFont(size=13), text_color="gray70",
             wraplength=520, justify="left",
         ).pack(anchor="w", pady=(4, 0))
+
+    def toggle_menu(row, menu_frame, entry):
+        if menu_frame.winfo_ismapped():
+            menu_frame.pack_forget()
+            return
+        
+        for widget in menu_frame.winfo_children():
+            widget.destroy()
+
+        options = [
+            ("📋  Copy kata name"),
+            ("🗑  Delete entry"),
+        ]
+
+        for label, command in options:
+            ctk.CTkButton(
+                menu_frame,
+                text=label,
+                anchor="w",
+                fg_color="transparent",
+                hover_color="gray30",
+                text_color="gray70",
+                height=30,
+                corner_radius=4,
+                command=command
+            ).pack(fill="x", padx=4, pady=2)
+
+        menu_frame.pack(fill="x", padx=10, pady=(0, 8))
+
+    def menu_frame_close(row):
+        for widget in row.winfo_children():
+            if isinstance(widget, ctk.CTkFrame) and widget.cget("fg_color")=="gray25":
+                widget.pack_forget()

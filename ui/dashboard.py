@@ -1,6 +1,8 @@
 import customtkinter as ctk
-from core.kata_log import get_streak, get_stats, calculate_weekly_entries, get_streak_number, check_today
+from core.kata_log import get_streak, get_stats, calculate_weekly_entries, get_streak_number, check_today, get_entries
 from datetime import date
+from ui.components import build_entry_row, STATUS_COLORS, DIFF_COLORS
+
 
 class DashboardPage(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
@@ -102,12 +104,29 @@ class DashboardPage(ctk.CTkFrame):
                 font=ctk.CTkFont(size=10), text_color="gray50"
             ).pack(pady=(4, 0))
 
+        #-----------------#
 
+        recent_card=ctk.CTkFrame(self)
+        recent_card.pack(fill="x", pady=(12,0))
 
+        ctk.CTkLabel(
+            recent_card, text="RECENT KATA", font=ctk.CTkFont(size=11), text_color="gray60"
+        ).pack(anchor="w", padx=14, pady=(12,8))
+
+        recent_container=ctk.CTkFrame(recent_card, fg_color="transparent")
+        recent_container.pack(fill="x", padx=14, pady=(0,12))
+
+        entries=get_entries()[:3]
+
+        if not entries:
+            ctk.CTkLabel(recent_container, text="No kata logged yet.", text_color="gray50",
+                         font=ctk.CTkFont(size=13)).pack(anchor="w")
+        else:
+            for entry in entries:
+                build_entry_row(recent_container, entry)
 
         #-----------------#
 
-        
 
     def log_entry(self):
         text=self.log_input.get("1.0","end").strip()
