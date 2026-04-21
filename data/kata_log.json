@@ -22,5 +22,13 @@
     "difficulty": "6kyu",
     "status": "Gave up",
     "notes": ""
+  },
+  {
+    "id": "20260421-132320",
+    "timestamp": "2026-04-21 13:23:20",
+    "kata_name": "test datuma",
+    "difficulty": "5kyu",
+    "status": "Struggled",
+    "notes": "test datuma"
   }
 ]

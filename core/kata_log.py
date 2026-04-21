@@ -75,3 +75,32 @@ def get_streak():
         did_kata=any(e["timestamp"][:10]==day for e in entries)
         result.append(did_kata)
     return result
+
+def get_streak_number():
+    streak=get_streak()
+    count=0
+    for did in reversed(streak):
+        if did:
+            count+=1
+        else:
+            break
+    return count
+
+def calculate_weekly_entries():
+    entries=load()
+    today = datetime.now()
+    count=0
+    start_of_week = today.replace(hour=0, minute=0, second=0, microsecond=0) \
+                        - timedelta(days=today.weekday())
+    end_of_week = start_of_week + timedelta(days=7)
+    for entry in entries:
+        date=datetime.strptime(entry["timestamp"], "%Y-%m-%d %H:%M:%S")
+        if start_of_week <= date <end_of_week:
+            count+=1
+    return count
+
+def check_today():
+    entries=load()
+    today=str(date.today())
+    return any(e["timestamp"][:10]==today for e in entries)
+
