@@ -49,17 +49,14 @@ class KataLogPage(ctk.CTkFrame):
                 font=ctk.CTkFont(size=11), text_color="gray60"
             ).pack(anchor="w", padx=14, pady=(12, 8))
 
-            # kata name input
             self.kata_name_input = ctk.CTkEntry(
                 card, placeholder_text="Kata name", height=34, corner_radius=6
             )
             self.kata_name_input.pack(fill="x", padx=14, pady=(0, 8))
 
-            # selectors row
             selectors = ctk.CTkFrame(card, fg_color="transparent")
             selectors.pack(fill="x", padx=14, pady=(0, 8))
 
-            # difficulty selector
             ctk.CTkLabel(
                 selectors, text="Difficulty", font=ctk.CTkFont(size=11), text_color="gray60"
             ).pack(side="left", padx=(0, 6))
@@ -71,14 +68,13 @@ class KataLogPage(ctk.CTkFrame):
                     corner_radius=99, border_width=1,
                     fg_color="transparent", text_color="gray60",
                     border_color="gray30",
-                    command=lambda d=diff: self._select_difficulty(d),
+                    command=lambda d=diff: self.select_difficulty(d),
                 )
                 btn.pack(side="left", padx=(0, 4))
                 self.difficulty_buttons[diff] = btn
 
-            self._select_difficulty(DIFFICULTIES[0])
+            self.select_difficulty(DIFFICULTIES[0])
 
-            # status selector
             status_row = ctk.CTkFrame(card, fg_color="transparent")
             status_row.pack(fill="x", padx=14, pady=(0, 8))
 
@@ -94,25 +90,23 @@ class KataLogPage(ctk.CTkFrame):
                     corner_radius=99, border_width=1,
                     fg_color="transparent", text_color="gray60",
                     border_color="gray30",
-                    command=lambda s=status: self._select_status(s),
+                    command=lambda s=status: self.select_status(s),
                 )
                 btn.pack(side="left", padx=(0, 4))
                 self.status_buttons[status] = btn
 
-            self._select_status(STATUSES[0])
+            self.select_status(STATUSES[0])
 
-            # notes box
             self.notes_input = ctk.CTkTextbox(card, height=70, corner_radius=6)
             self.notes_input.pack(fill="x", padx=14, pady=(0, 8))
             self.notes_input.insert("1.0", "What did you learn or struggle with?")
 
-            # log button
             btn_row = ctk.CTkFrame(card, fg_color="transparent")
             btn_row.pack(fill="x", padx=14, pady=(0, 12))
             ctk.CTkButton(
                 btn_row, text="Log kata", width=100, command=self._save_entry
             ).pack(side="right")
-    def _select_difficulty(self, diff: str):
+    def select_difficulty(self, diff: str):
         self.selected_difficulty = diff
         for d, btn in self.difficulty_buttons.items():
             if d == diff:
@@ -121,7 +115,7 @@ class KataLogPage(ctk.CTkFrame):
             else:
                 btn.configure(fg_color="transparent", text_color="gray60", border_color="gray30")
 
-    def _select_status(self, status: str):
+    def select_status(self, status: str):
         self.selected_status = status
         colors = STATUS_COLORS.get(status, STATUS_COLORS["Learning"])
         for s, btn in self.status_buttons.items():
@@ -152,12 +146,11 @@ class KataLogPage(ctk.CTkFrame):
             notes=notes
         )
 
-        # reset inputs
         self.kata_name_input.delete(0, "end")
         self.notes_input.delete("1.0", "end")
         self.notes_input.insert("1.0", "What did you learn or struggle with?")
-        self._select_difficulty(DIFFICULTIES[0])
-        self._select_status(STATUSES[0])
+        self.select_difficulty(DIFFICULTIES[0])
+        self.select_status(STATUSES[0])
 
         self.build_feed()
 

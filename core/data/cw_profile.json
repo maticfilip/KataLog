@@ -1,0 +1,29 @@
+{
+  "id": "69d29e43c31b8c844263e893",
+  "username": "maticfilip",
+  "name": "Filip Mati\u0107",
+  "honor": 55,
+  "clan": null,
+  "leaderboardPosition": null,
+  "skills": null,
+  "ranks": {
+    "overall": {
+      "rank": -7,
+      "name": "7 kyu",
+      "color": "white",
+      "score": 43
+    },
+    "languages": {
+      "python": {
+        "rank": -7,
+        "name": "7 kyu",
+        "color": "white",
+        "score": 43
+      }
+    }
+  },
+  "codeChallenges": {
+    "totalAuthored": 0,
+    "totalCompleted": 18
+  }
+}
