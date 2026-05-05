@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from core.kata_log import get_streak, get_stats, calculate_weekly_entries, get_streak_number, check_today, get_entries
-from datetime import date
+from datetime import date, timedelta
 from ui.components import build_entry_row, STATUS_COLORS, DIFF_COLORS
 
 
@@ -103,6 +103,15 @@ class DashboardPage(ctk.CTkFrame):
                 col, text=label,
                 font=ctk.CTkFont(size=10), text_color="gray50"
             ).pack(pady=(4, 0))
+
+            day_offset=i-6
+            actual_date=date.today() + timedelta(days=day_offset)
+            date_str=actual_date.strftime("%d %b")
+
+            ctk.CTkLabel(
+                col, text=date_str,
+                font=ctk.CTkFont(size=9), text_color="gray35"
+            ).pack()
 
         #-----------------#
 
