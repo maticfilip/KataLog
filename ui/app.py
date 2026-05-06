@@ -4,6 +4,7 @@ from datetime import datetime
 from ui.kata_log import KataLogPage
 from ui.dashboard import DashboardPage
 from ui.weekly_review import WeeklyReviewPage
+from ui.profile import ProfilePage
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
@@ -91,7 +92,7 @@ class App(ctk.CTk):
             ("dashboard"," Dashboard"),
             ("journal", " Your Taka"),
             ("review", " Review"),
-            ("review", " Your Profile"),
+            ("profile", " Your Profile"),
         ]
         
         for key, label in nav_items:
@@ -136,7 +137,8 @@ class App(ctk.CTk):
         self.pages:dict[str,ctk.CTkFrame]={
             "dashboard":DashboardPage(self.content_area),
             "journal":KataLogPage(self.content_area),
-            "review":WeeklyReviewPage(self.content_area)
+            "review":WeeklyReviewPage(self.content_area),
+            "profile":ProfilePage(self.content_area)
         }
         for page in self.pages.values():
             page.grid(row=0, column=0, sticky="nsew")
@@ -147,8 +149,8 @@ class App(ctk.CTk):
         titles={
             "dashboard":"Dashboard",
             "journal":"Journal",
-            "habits":"Habits",
-            "review":"Weekly Review"
+            "review":"Weekly Review",
+            "profile":"Profile"
         }
 
         self.page_title_label.configure(text=titles.get(key,key.title()))
