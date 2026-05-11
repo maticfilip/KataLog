@@ -30,5 +30,63 @@
     "difficulty": "5kyu",
     "status": "Struggled",
     "notes": "test datuma"
+  },
+  {
+    "id": "20260511-122758",
+    "timestamp": "2026-05-11 12:27:58",
+    "kata_name": "Regex validate PIN code",
+    "difficulty": "7kyu",
+    "status": "Struggled",
+    "notes": "Couldn't remember that there is a built in function isnumeric() in python"
+  },
+  {
+    "id": "20260511-124249",
+    "timestamp": "2026-05-11 12:42:49",
+    "kata_name": "akjfnas",
+    "difficulty": "7kyu",
+    "status": "Solved",
+    "description": "Paste the description of thsk here.",
+    "notes": "What did you learn or struggle wi",
+    "code": "Paste your solution code he"
+  },
+  {
+    "id": "20260511-125004",
+    "timestamp": "2026-05-11 12:50:04",
+    "kata_name": "Regex validate PIN code",
+    "difficulty": "7kyu",
+    "status": "Struggled",
+    "description": "ATM machines allow 4 or 6 digit PIN codes and PIN codes cannot contain anything but exactly 4 digits or exactly 6 digits.\n\nIf the function is passed a valid PIN string, return true, else return false.",
+    "notes": "Forgot about the isnumeric() and isdigit() built in functions in python",
+    "code": "def validate_pin(pin):\n    if pin.isnumeric() and len(pin) in [4,6]:\n        return True\n    return False"
+  },
+  {
+    "id": "20260511-125227",
+    "timestamp": "2026-05-11 12:52:27",
+    "kata_name": "Regex validate PIN code",
+    "difficulty": "7kyu",
+    "status": "Struggled",
+    "description": "ATM machines allow 4 or 6 digit PIN codes and PIN codes cannot contain anything but exactly 4 digits or exactly 6 digits.\n\nIf the function is passed a valid PIN string, return true, else return false.",
+    "notes": "Forgot about the isnumeric() and isdigit() built in functions in python",
+    "code": "def validate_pin(pin):\n    if pin.isnumeric() and len(pin) in [4,6]:\n        return True\n    return False"
+  },
+  {
+    "id": "20260511-143359",
+    "timestamp": "2026-05-11 14:33:59",
+    "kata_name": "testiram boje",
+    "difficulty": "6kyu",
+    "status": "Struggled",
+    "description": "testiram boje",
+    "notes": "testiram boje",
+    "code": "testiram boje"
+  },
+  {
+    "id": "20260511-143419",
+    "timestamp": "2026-05-11 14:34:19",
+    "kata_name": "opet testiram boje",
+    "difficulty": "3kyu",
+    "status": "Gave up",
+    "description": "opet testiram boje",
+    "notes": "opet testiram boje",
+    "code": "opet testiram boje"
   }
 ]

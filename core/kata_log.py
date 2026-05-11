@@ -21,7 +21,7 @@ def save(entries):
     with open(KATA_FILE, "w") as f:
         json.dump(entries, f, indent=2)
 
-def add_entry(kata_name, difficulty,status,notes):
+def add_entry(kata_name, difficulty,status,description,notes,code):
     entries=load()
     entries.append({
         "id":datetime.now().strftime("%Y%m%d-%H%M%S"),
@@ -29,7 +29,9 @@ def add_entry(kata_name, difficulty,status,notes):
         "kata_name":kata_name,
         "difficulty":difficulty,
         "status":status,
-        "notes":notes
+        "description":description,
+        "notes":notes,
+        "code":code
     })
     save(entries)
 

@@ -8,9 +8,10 @@ STATUS_COLORS = {
 }
 
 DIFF_COLORS = {
-    "8kyu": "#888888", "7kyu": "#888888",
-    "6kyu": "#EF9F27", "5kyu": "#EF9F27",
-    "4kyu": "#5DCAA5", "3kyu+": "#AFA9EC",
+    "8kyu": "#7A7A7A", "7kyu": "#B0B0B0",
+    "6kyu": "#C97D00", "5kyu": "#F0A500",
+    "4kyu": "#2A5F9E", "3kyu": "#3C7EBB",
+    "2kyu":"#6A3FA0", "1kyu":"#865FC0"
 }
 
 def build_entry_row(parent, entry: dict):
@@ -61,14 +62,45 @@ def build_entry_row(parent, entry: dict):
         hover_color="gray30",text_color="gray50", font=ctk.CTkFont(size=12),
         corner_radius=4, command=lambda:toggle_menu(row, menu_frame,entry)
     )
-    dots_btn.pack(side="right")
+    dots_btn.pack(side="right")   
+
+    if entry.get("description"):
+        ctk.CTkLabel(
+            content, text="Description",
+            font=ctk.CTkFont(size=11), text_color="gray50"
+        ).pack(anchor="w", pady=(6, 2))
+        ctk.CTkLabel(
+            content, text=entry["description"],
+            font=ctk.CTkFont(size=12), text_color="gray60",
+            wraplength=520, justify="left",
+        ).pack(anchor="w")
 
     if entry.get("notes"):
         ctk.CTkLabel(
             content, text=entry["notes"],
-            font=ctk.CTkFont(size=13), text_color="gray70",
+            font=ctk.CTkFont(size=13), text_color=diff_color,
             wraplength=520, justify="left",
         ).pack(anchor="w", pady=(4, 0))
+
+    if entry.get("code"):
+        ctk.CTkLabel(
+            content, text="Solution",
+            font=ctk.CTkFont(size=11), text_color="gray50"
+        ).pack(anchor="w", pady=(6, 2))
+        ctk.CTkTextbox(
+            content, height=80, corner_radius=6,
+            font=ctk.CTkFont(family="Courier", size=12),
+            fg_color="gray12", text_color="#5DCAA5",
+            state="normal"
+        )._textbox.configure(wrap="none")
+        code_box = ctk.CTkTextbox(
+            content, height=80, corner_radius=6,
+            font=ctk.CTkFont(family="Courier", size=12),
+            fg_color="gray12", text_color="#5DCAA5",
+        )
+        code_box.pack(fill="x", pady=(0, 4))
+        code_box.insert("1.0", entry["code"])
+        code_box.configure(state="disabled")
 
     def toggle_menu(row, menu_frame, entry):
         if menu_frame.winfo_ismapped():

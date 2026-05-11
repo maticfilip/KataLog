@@ -97,14 +97,22 @@ class KataLogPage(ctk.CTkFrame):
 
             self.select_status(STATUSES[0])
 
+            self.description_input=ctk.CTkTextbox(card, height=70, corner_radius=6)
+            self.description_input.pack(fill="x", padx=14, pady=(0,8))
+            self.description_input.insert("1.0", "Paste the description of the task here.")
+
             self.notes_input = ctk.CTkTextbox(card, height=70, corner_radius=6)
             self.notes_input.pack(fill="x", padx=14, pady=(0, 8))
             self.notes_input.insert("1.0", "What did you learn or struggle with?")
 
+            self.solution_input=ctk.CTkTextbox(card, height=70, corner_radius=6)
+            self.solution_input.pack(fill="x",padx=14, pady=(0,8))
+            self.solution_input.insert("1.0", "Paste your solution code here.")
+
             btn_row = ctk.CTkFrame(card, fg_color="transparent")
             btn_row.pack(fill="x", padx=14, pady=(0, 12))
             ctk.CTkButton(
-                btn_row, text="Log kata", width=100, command=self._save_entry
+                btn_row, text="Log kata", width=100, command=self.save_entry
             ).pack(side="right")
     def select_difficulty(self, diff: str):
         self.selected_difficulty = diff
@@ -128,9 +136,11 @@ class KataLogPage(ctk.CTkFrame):
             else:
                 btn.configure(fg_color="transparent", text_color="gray60", border_color="gray30")
 
-    def _save_entry(self):
+    def save_entry(self):
         kata_name = self.kata_name_input.get().strip()
         notes = self.notes_input.get("1.0", "end").strip()
+        code=self.solution_input.get("1.0","end").strip()
+        description=self.description_input.get("1.0","end").strip()
 
         if not kata_name:
             self.kata_name_input.configure(placeholder_text_color="red")
@@ -138,17 +148,27 @@ class KataLogPage(ctk.CTkFrame):
 
         if notes == "What did you learn or struggle with?":
             notes = ""
+        if code == "Paste your solution code here.":
+            code = ""
+        if description=="Paste the description of the task here.":
+            description=""
 
         add_entry(
             kata_name=kata_name,
             difficulty=self.selected_difficulty,
             status=self.selected_status,
+            description=description,
+            code=code,
             notes=notes
         )
 
         self.kata_name_input.delete(0, "end")
         self.notes_input.delete("1.0", "end")
+        self.description_input.delete("1.0", "end")
+        self.solution_input.delete("1.0", "end")
         self.notes_input.insert("1.0", "What did you learn or struggle with?")
+        self.description_input.insert("1.0", "Paste the description of the task here.")
+        self.solution_input.insert("1.0", "Paste your solution code here.")
         self.select_difficulty(DIFFICULTIES[0])
         self.select_status(STATUSES[0])
 
