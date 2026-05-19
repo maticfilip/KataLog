@@ -106,3 +106,7 @@ def check_today():
     today=str(date.today())
     return any(e["timestamp"][:10]==today for e in entries)
 
+def delete_entry_by_id(entry_id):
+    entries=load()
+    entries=[e for e in entries if e["id"] != entry_id]
+    save(entries)

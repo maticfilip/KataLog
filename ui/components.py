@@ -14,6 +14,46 @@ DIFF_COLORS = {
     "2kyu":"#6A3FA0", "1kyu":"#865FC0"
 }
 
+def copy_to_clipboard(row,text):
+     root=row.winfo_toplevel()
+     root.clipboard_clear()
+     root.clipboard_append(text)
+
+def delete_entry(row, entry_id):
+     from core.kata_log import delete_entry_by_id
+     delete_entry_by_id(entry_id)
+     row.destroy()
+
+def toggle_menu(row, menu_frame, entry):
+        if menu_frame.winfo_ismapped():
+            menu_frame.pack_forget()
+            return
+        
+        for widget in menu_frame.winfo_children():
+            widget.destroy()
+
+        options = [
+            ("Copy kata name",lambda:copy_to_clipboard(row, entry["kata_name"])),
+            ("Delete entry", lambda: delete_entry(row, entry["id"]))
+        ]
+
+        for label, command in options:
+            ctk.CTkButton(
+                menu_frame,
+                text=label,
+                anchor="w",
+                fg_color="transparent",
+                hover_color="gray30",
+                text_color="gray70",
+                height=30,
+                corner_radius=4,
+                command=command
+            ).pack(fill="x", padx=4, pady=2)
+
+        menu_frame.pack(fill="x", padx=10, pady=(0, 8))
+
+    
+
 def build_entry_row(parent, entry: dict):
     colors = STATUS_COLORS.get(entry["status"], STATUS_COLORS["Learning"])
     diff_color = DIFF_COLORS.get(entry["difficulty"], "gray50")
@@ -87,12 +127,6 @@ def build_entry_row(parent, entry: dict):
             content, text="Solution",
             font=ctk.CTkFont(size=11), text_color="gray50"
         ).pack(anchor="w", pady=(6, 2))
-        ctk.CTkTextbox(
-            content, height=80, corner_radius=6,
-            font=ctk.CTkFont(family="Courier", size=12),
-            fg_color="gray12", text_color="#5DCAA5",
-            state="normal"
-        )._textbox.configure(wrap="none")
         code_box = ctk.CTkTextbox(
             content, height=80, corner_radius=6,
             font=ctk.CTkFont(family="Courier", size=12),
@@ -102,35 +136,6 @@ def build_entry_row(parent, entry: dict):
         code_box.insert("1.0", entry["code"])
         code_box.configure(state="disabled")
 
-    def toggle_menu(row, menu_frame, entry):
-        if menu_frame.winfo_ismapped():
-            menu_frame.pack_forget()
-            return
-        
-        for widget in menu_frame.winfo_children():
-            widget.destroy()
+    
 
-        options = [
-            ("📋  Copy kata name"),
-            ("🗑  Delete entry"),
-        ]
-
-        for label, command in options:
-            ctk.CTkButton(
-                menu_frame,
-                text=label,
-                anchor="w",
-                fg_color="transparent",
-                hover_color="gray30",
-                text_color="gray70",
-                height=30,
-                corner_radius=4,
-                command=command
-            ).pack(fill="x", padx=4, pady=2)
-
-        menu_frame.pack(fill="x", padx=10, pady=(0, 8))
-
-    def menu_frame_close(row):
-        for widget in row.winfo_children():
-            if isinstance(widget, ctk.CTkFrame) and widget.cget("fg_color")=="gray25":
-                widget.pack_forget()
+    
