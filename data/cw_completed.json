@@ -1,0 +1,200 @@
+[
+  {
+    "id": "55f8a9c06c018a0d6e000132",
+    "name": "Regex validate PIN code",
+    "slug": "regex-validate-pin-code",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-05-10T19:47:59.461Z"
+  },
+  {
+    "id": "56541980fa08ab47a0000040",
+    "name": "Printer Errors",
+    "slug": "printer-errors",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-05-10T19:38:05.958Z"
+  },
+  {
+    "id": "5412509bd436bd33920011bc",
+    "name": "Credit Card Mask",
+    "slug": "credit-card-mask",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-05-10T19:29:49.274Z"
+  },
+  {
+    "id": "55a2d7ebe362935a210000b2",
+    "name": "Find the smallest integer in the array",
+    "slug": "find-the-smallest-integer-in-the-array",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-05-10T19:18:44.525Z"
+  },
+  {
+    "id": "57cfdf34902f6ba3d300001e",
+    "name": "Sort and Star",
+    "slug": "sort-and-star",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-05-05T17:51:42.695Z"
+  },
+  {
+    "id": "568dcc3c7f12767a62000038",
+    "name": "L1: Set Alarm",
+    "slug": "l1-set-alarm",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-05-05T17:44:22.403Z"
+  },
+  {
+    "id": "5bbb8887484fcd36fb0020ca",
+    "name": "Plus - minus - plus - plus - ... - Count",
+    "slug": "plus-minus-plus-plus-dot-dot-dot-count",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-04-20T19:42:13.159Z"
+  },
+  {
+    "id": "5aa1bcda373c2eb596000112",
+    "name": "Maximum Triplet Sum (Array Series #7) ",
+    "slug": "maximum-triplet-sum-array-series-number-7",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-04-13T07:27:11.220Z"
+  },
+  {
+    "id": "588e27b7d1140d31cb000060",
+    "name": "Pairs of integers from 0 to n",
+    "slug": "pairs-of-integers-from-0-to-n",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-04-06T17:35:26.223Z"
+  },
+  {
+    "id": "52f3149496de55aded000410",
+    "name": "Summing  a number's digits",
+    "slug": "summing-a-numbers-digits",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-04-06T17:23:32.096Z"
+  },
+  {
+    "id": "5679aa472b8f57fb8c000047",
+    "name": "Equal Sides Of An Array",
+    "slug": "equal-sides-of-an-array",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-04-06T17:07:31.648Z"
+  },
+  {
+    "id": "5656b6906de340bd1b0000ac",
+    "name": "Two to One",
+    "slug": "two-to-one",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-04-06T13:06:07.007Z"
+  },
+  {
+    "id": "5648b12ce68d9daa6b000099",
+    "name": "Number of People in the Bus",
+    "slug": "number-of-people-in-the-bus",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-04-06T12:57:00.206Z"
+  },
+  {
+    "id": "55c45be3b2079eccff00010f",
+    "name": "Your order,  please",
+    "slug": "your-order-please",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-04-06T12:41:21.991Z"
+  },
+  {
+    "id": "51f2d1cafc9c0f745c00037d",
+    "name": "String ends with?",
+    "slug": "string-ends-with",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-04-06T11:33:13.551Z"
+  },
+  {
+    "id": "57cebe1dc6fdc20c57000ac9",
+    "name": "Shortest Word",
+    "slug": "shortest-word",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-04-06T11:31:18.489Z"
+  },
+  {
+    "id": "5a026a9cffe75fbace00007f",
+    "name": "Circles in Polygons",
+    "slug": "circles-in-polygons",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-04-06T11:23:03.824Z"
+  },
+  {
+    "id": "56606694ec01347ce800001b",
+    "name": "Is this a triangle?",
+    "slug": "is-this-a-triangle",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-04-05T19:06:50.650Z"
+  },
+  {
+    "id": "546e2562b03326a88e000020",
+    "name": "Square Every Digit",
+    "slug": "square-every-digit",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-04-05T18:54:05.500Z"
+  },
+  {
+    "id": "53dbd5315a3c69eed20002dd",
+    "name": "List Filtering",
+    "slug": "list-filtering",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-04-05T18:40:06.103Z"
+  },
+  {
+    "id": "55f9b48403f6b87a7c0000bd",
+    "name": "Beginner Series #1 School Paperwork",
+    "slug": "beginner-series-number-1-school-paperwork",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-04-05T18:12:42.943Z"
+  },
+  {
+    "id": "53ee5429ba190077850011d4",
+    "name": "You Can't Code Under Pressure #1",
+    "slug": "you-cant-code-under-pressure-number-1",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-04-05T18:09:51.025Z"
+  }
+]

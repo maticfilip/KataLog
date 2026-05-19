@@ -6,8 +6,9 @@ from ui.components import build_entry_row, STATUS_COLORS, DIFF_COLORS
 from core.kata_log import add_entry, get_entries, search_entries, group_by_day, DIFFICULTIES, STATUSES
 
 class KataLogPage(ctk.CTkFrame):
-    def __init__(self, master, **kwargs):
+    def __init__(self, master,app=None, **kwargs):
         super().__init__(master, fg_color="transparent", **kwargs)
+        self.app=app
 
         self.selected_status = STATUSES[0]
         self.selected_difficulty = DIFFICULTIES[0]
@@ -173,6 +174,9 @@ class KataLogPage(ctk.CTkFrame):
         self.select_status(STATUSES[0])
 
         self.build_feed()
+
+        if self.app:
+            self.app.refresh_dashboard()
 
     def build_feed_area(self):
         self.feed_frame = ctk.CTkFrame(self, fg_color="transparent")

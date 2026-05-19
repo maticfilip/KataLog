@@ -1,8 +1,7 @@
 import requests
 import json
 import os
-from datetime import date
-import datetime
+from datetime import date, datetime
 
 PROFILE_FILE="core\data\cw_profile.json"
 COMPLETED_FILE="data/cw_completed.json"

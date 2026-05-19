@@ -14,35 +14,6 @@ LANG_COLORS = [
     "#3563D4", "#EF9F27", "#E24B4A",
     "#5DCAA5", "#AFA9EC", "#888780",
 ]
-
-def connect(self):
-    username=self.username_input.get().strip()
-    if not username:
-        return
-    
-    self.set_connect_status("Connecting...","gray50")
-    self.after(100,lambda:self.do_fetch(username))
-
-def do_fetch(self, username):
-    result=fetch_all(username)
-
-    if "error" in result:
-        self.set_connect_status(f"Error: {result["error"]}", "#E24B4A")
-        return
-    self.set_connect_status("Connected!","1D9E75")
-    self.after(1000, self.refresh)
-
-def set_connect_status(self, message, color):
-    if hasattr(self, "status_label"):
-        self.status_label.configure(text=message, text_color=color)
-
-def refresh(self):
-    for widget in self.winfo_children():
-        widget.destroy()
-    self.build_profile_card()
-    self.build_stats()
-    self.build_charts()
-    self.build_connect_card()
              
 
 
@@ -50,6 +21,36 @@ class ProfilePage(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, fg_color="transparent", **kwargs)
 
+        self.build_profile_card()
+        self.build_stats()
+        self.build_charts()
+        self.build_connect_card()
+
+
+    def connect(self):
+        username=self.username_input.get().strip()
+        if not username:
+            return
+        
+        self.set_connect_status("Connecting...","gray50")
+        self.after(100,lambda:self.do_fetch(username))
+
+    def do_fetch(self, username):
+        result=fetch_all(username)
+
+        if "error" in result:
+            self.set_connect_status(f"Error: {result["error"]}", "#E24B4A")
+            return
+        self.set_connect_status("Connected!","#1D9E75")
+        self.after(1000, self.refresh)
+
+    def set_connect_status(self, message, color):
+        if hasattr(self, "status_label"):
+            self.status_label.configure(text=message, text_color=color)
+
+    def refresh(self):
+        for widget in self.winfo_children():
+            widget.destroy()
         self.build_profile_card()
         self.build_stats()
         self.build_charts()
@@ -116,7 +117,7 @@ class ProfilePage(ctk.CTkFrame):
             text_color="gray60",
             border_color="gray30",
             corner_radius=8,
-            command=lambda: self._do_fetch(username)
+            command=lambda: self.do_fetch(username)
         ).pack(side="right", padx=14)
 
 
@@ -151,7 +152,6 @@ class ProfilePage(ctk.CTkFrame):
                 font=ctk.CTkFont(size=11), text_color="gray60"
             ).pack(anchor="w", padx=14, pady=(0, 12))
 
-    # ── Charts row ────────────────────────────────────────────────────────────
 
     def build_charts(self):
         row = ctk.CTkFrame(self, fg_color="transparent")
@@ -177,7 +177,7 @@ class ProfilePage(ctk.CTkFrame):
             "6 kyu":  (40,  228),
             "5 kyu":  (20,  228),
             "4 kyu":  (8,   228),
-            "3 kyu+": (2,   228),
+            "3 kyu": (2,   228),
         }
 
         bars_frame = ctk.CTkFrame(card, fg_color="transparent")
@@ -251,7 +251,6 @@ class ProfilePage(ctk.CTkFrame):
                 font=ctk.CTkFont(size=11), text_color="gray50"
             ).pack(side="right")
 
-    # ── Connect card (shown when not connected) ───────────────────────────────
 
     def build_connect_card(self):
         card = ctk.CTkFrame(self, fg_color="gray17", corner_radius=10, border_width=1, border_color="gray30")
@@ -283,11 +282,5 @@ class ProfilePage(ctk.CTkFrame):
             width=90, height=34,
             fg_color="#534AB7",
             hover_color="#3C3489",
-            command=self._connect
+            command=self.connect
         ).pack(side="left")
-
-    def _connect(self):
-        username = self.username_input.get().strip()
-        if not username:
-            return
-        print(f"[CONNECT] {username}")  

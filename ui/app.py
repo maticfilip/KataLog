@@ -136,7 +136,7 @@ class App(ctk.CTk):
 
         self.pages:dict[str,ctk.CTkFrame]={
             "dashboard":DashboardPage(self.content_area),
-            "journal":KataLogPage(self.content_area),
+            "journal":KataLogPage(self.content_area, app=self),
             "review":WeeklyReviewPage(self.content_area),
             "profile":ProfilePage(self.content_area)
         }
@@ -159,5 +159,9 @@ class App(ctk.CTk):
             btn.set_active(k==key)
 
         self.pages[key].tkraise()
+
+    def refresh_dashboard(self):
+        self.pages["dashboard"].refresh()
+    
 
 

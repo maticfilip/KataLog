@@ -88,5 +88,45 @@
     "description": "opet testiram boje",
     "notes": "opet testiram boje",
     "code": "opet testiram boje"
+  },
+  {
+    "id": "20260511-160845",
+    "timestamp": "2026-05-11 16:08:45",
+    "kata_name": "tet",
+    "difficulty": "8kyu",
+    "status": "Struggled",
+    "description": "Paste the description",
+    "notes": "What did you leauggle with?",
+    "code": "jlk"
+  },
+  {
+    "id": "20260511-161119",
+    "timestamp": "2026-05-11 16:11:19",
+    "kata_name": "asfasfasf",
+    "difficulty": "4kyu",
+    "status": "Struggled",
+    "description": "Paste the description of the task here.afass",
+    "notes": "What did you learn or struggle with?asfasf",
+    "code": "Paste your solution code here.asfasf"
+  },
+  {
+    "id": "20260511-161318",
+    "timestamp": "2026-05-11 16:13:18",
+    "kata_name": "sfasf",
+    "difficulty": "6kyu",
+    "status": "Struggled",
+    "description": "Paste the description of the task here.asfa",
+    "notes": "What did you learn or struggle with?fsafas",
+    "code": "Paste your solution code here.fasf"
+  },
+  {
+    "id": "20260519-120025",
+    "timestamp": "2026-05-19 12:00:25",
+    "kata_name": "dodajem",
+    "difficulty": "7kyu",
+    "status": "Solved",
+    "description": "as0eifj",
+    "notes": "adi0gjadi0fn",
+    "code": "aifadif"
   }
 ]

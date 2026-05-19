@@ -72,7 +72,7 @@ def get_streak():
     entries=load()
     today=date.today()
     result=[]
-    for i in range(15,-1,-1):
+    for i in range(6,-1,-1):
         day=str(today-timedelta(days=i))
         did_kata=any(e["timestamp"][:10]==day for e in entries)
         result.append(did_kata)
