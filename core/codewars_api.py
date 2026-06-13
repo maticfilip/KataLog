@@ -63,8 +63,6 @@ def fetch_all(username):
     fetch_completed(username)
     return profile
 
-
-
 def load_profile():
     return load(PROFILE_FILE)
 
@@ -104,6 +102,11 @@ def get_username():
     if profile:
         return profile.get("username")
     return None
+
+def disconnect():
+    for path in [PROFILE_FILE, COMPLETED_FILE]:
+        if os.path.exists(path):
+            os.remove(path)
 
 if __name__=="__main__":
     data=fetch_profile("maticfilip")

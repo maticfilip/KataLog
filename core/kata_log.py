@@ -1,5 +1,7 @@
 import json
 import os
+import csv
+import shutil
 from datetime import datetime, date, timedelta
 
 KATA_FILE="data/kata_log.json"
@@ -110,3 +112,25 @@ def delete_entry_by_id(entry_id):
     entries=load()
     entries=[e for e in entries if e["id"] != entry_id]
     save(entries)
+
+def get_difficulty_breakdown():
+    entries=load()
+    counts={}
+    for e in entries:
+        diff=e.get("difficulty","unknown")
+        counts[diff]=counts.get(diff,0 )+1
+    return counts
+
+def export_json(destination):
+    shutil.copy(KATA_FILE, destination)
+
+def export_csv(destination):
+    entries=load()
+    if not entries:
+        return
+    fields=["id","timestamp","kata_name","difficulty","status","language","notes","description","code"]
+    with open(destination, "w", newline="", encoding="utf-8") as f:
+        writer=csv.DictWriter(f, fieldnames=fields, extrasaction="ignore")
+        writer.writeheader()
+        writer.writerows(entries)
+    

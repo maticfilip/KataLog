@@ -1,5 +1,6 @@
 import customtkinter as ctk
-from core.codewars_api import fetch_profile, load_profile, fetch_all, get_completed_this_month
+from core.codewars_api import fetch_profile, load_profile, fetch_all, get_completed_this_month,get_language_ranks
+from core.kata_log import get_difficulty_breakdown
 
 DIFF_COLORS = {
     "8 kyu": "#888780",
@@ -171,19 +172,24 @@ class ProfilePage(ctk.CTkFrame):
             font=ctk.CTkFont(size=11), text_color="gray60"
         ).pack(anchor="w", padx=14, pady=(12, 10))
 
-        data = {
-            "8 kyu":  (92,  228),
-            "7 kyu":  (68,  228),
-            "6 kyu":  (40,  228),
-            "5 kyu":  (20,  228),
-            "4 kyu":  (8,   228),
-            "3 kyu": (2,   228),
-        }
+        raw = get_difficulty_breakdown()
+
+        kyu_order = ["8kyu", "7kyu", "6kyu", "5kyu", "4kyu", "3kyu", "2kyu", "1kyu"]
+        data = {k: raw.get(k, 0) for k in kyu_order if k in raw}
 
         bars_frame = ctk.CTkFrame(card, fg_color="transparent")
         bars_frame.pack(fill="x", padx=14, pady=(0, 12))
 
-        for kyu, (count, total) in data.items():
+        if not data:
+            ctk.CTkLabel(
+                bars_frame, text="No kata logged yet.",
+                text_color="gray50", font=ctk.CTkFont(size=12)
+            ).pack(anchor="w")
+            return
+
+        total = max(data.values())  # use max as 100% reference
+
+        for kyu, count in data.items():
             row = ctk.CTkFrame(bars_frame, fg_color="transparent")
             row.pack(fill="x", pady=(0, 6))
 
@@ -197,7 +203,7 @@ class ProfilePage(ctk.CTkFrame):
             track.pack(side="left", fill="x", expand=True, padx=(6, 8))
             track.pack_propagate(False)
 
-            fill_pct = count / total
+            fill_pct = count / total if total > 0 else 0
             color = DIFF_COLORS.get(kyu, "gray50")
 
             fill = ctk.CTkFrame(track, height=8, corner_radius=99, fg_color=color)
@@ -209,6 +215,7 @@ class ProfilePage(ctk.CTkFrame):
                 anchor="e"
             ).pack(side="left")
 
+
     def build_language_list(self, parent):
         card = ctk.CTkFrame(parent)
         card.grid(row=0, column=1, padx=(6, 0), sticky="nsew")
@@ -218,21 +225,27 @@ class ProfilePage(ctk.CTkFrame):
             font=ctk.CTkFont(size=11), text_color="gray60"
         ).pack(anchor="w", padx=14, pady=(12, 10))
 
-        languages = [
-            ("Python",     "5 kyu"),
-            ("JavaScript", "6 kyu"),
-            ("Java",       "7 kyu"),
-            ("C#",         "8 kyu"),
-        ]
-
         langs_frame = ctk.CTkFrame(card, fg_color="transparent")
         langs_frame.pack(fill="x", padx=14, pady=(0, 12))
 
-        for i, (lang, rank) in enumerate(languages):
+        language_ranks = get_language_ranks()
+
+        if not language_ranks:
+            ctk.CTkLabel(
+                langs_frame, text="No language data yet.",
+                text_color="gray50", font=ctk.CTkFont(size=12)
+            ).pack(anchor="w")
+            return
+
+        sorted_langs = sorted(
+            language_ranks.items(),
+            key=lambda x: x[1].get("rank", 0)
+        )
+
+        for i, (lang, rank_data) in enumerate(sorted_langs):
             row = ctk.CTkFrame(langs_frame, fg_color="transparent")
             row.pack(fill="x", pady=(0, 8))
 
-            # color dot
             dot = ctk.CTkFrame(
                 row, width=10, height=10,
                 corner_radius=5,
@@ -241,13 +254,15 @@ class ProfilePage(ctk.CTkFrame):
             dot.pack(side="left", padx=(0, 8))
             dot.pack_propagate(False)
 
+            display_name = lang.replace("csharp", "C#").replace("cpp", "C++").capitalize()
+
             ctk.CTkLabel(
-                row, text=lang,
+                row, text=display_name,
                 font=ctk.CTkFont(size=13)
             ).pack(side="left")
 
             ctk.CTkLabel(
-                row, text=rank,
+                row, text=rank_data.get("name", "—"),
                 font=ctk.CTkFont(size=11), text_color="gray50"
             ).pack(side="right")
 
