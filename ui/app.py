@@ -91,7 +91,7 @@ class App(ctk.CTk):
 
         nav_items=[
             ("dashboard"," Dashboard"),
-            ("journal", " Your Taka"),
+            ("journal", " Your Kata"),
             ("review", " Review"),
             ("profile", " Your Profile"),
             ("settings","Settings")
@@ -106,63 +106,81 @@ class App(ctk.CTk):
             btn.pack(fill="x", padx=10, pady=2)
             self.nav_buttons[key]=btn
 
-        ctk.CTkFrame(self.sidebar, height=1, fg_color="gray30").pack(
-            fill="x", padx=10, pady=12, side="bottom"
-        )
-
-        NavButton(self.sidebar, text=" Settings", command=lambda: None).pack(
-            fill="x", padx=10, pady=(0,12), side="bottom"
-        )
 
     def build_main(self):
-        self.main_frame=ctk.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        self.main_frame = ctk.CTkFrame(self, corner_radius=0, fg_color="transparent")
         self.main_frame.grid(row=0, column=1, sticky="nsew")
         self.main_frame.grid_rowconfigure(1, weight=1)
         self.main_frame.grid_columnconfigure(0, weight=1)
 
-        self.topbar=ctk.CTkFrame(self.main_frame, height=52, corner_radius=0)
+        self.topbar = ctk.CTkFrame(self.main_frame, height=52, corner_radius=0)
         self.topbar.grid(row=0, column=0, sticky="ew")
         self.topbar.grid_propagate(False)
 
-        self.page_title_label=ctk.CTkLabel(
-            self.topbar, text="Dashboard", font=ctk.CTkFont(size=16, weight="bold")
+        self.page_title_label = ctk.CTkLabel(
+            self.topbar, text="Dashboard",
+            font=ctk.CTkFont(size=16, weight="bold")
         )
         self.page_title_label.pack(side="left", padx=20, pady=14)
 
-        self.content_area=ctk.CTkScrollableFrame(
+        # refresh button — right side of topbar
+        self.refresh_btn = ctk.CTkButton(
+            self.topbar,
+            text="↺  Refresh",
+            width=90, height=28,
+            fg_color="transparent",
+            border_width=1,
+            text_color="gray60",
+            border_color="gray30",
+            hover_color="gray25",
+            font=ctk.CTkFont(size=12),
+            command=self.refresh_current_page
+        )
+        self.refresh_btn.pack(side="right", padx=16)
+
+        self.content_area = ctk.CTkScrollableFrame(
             self.main_frame, corner_radius=0, fg_color="transparent"
         )
         self.content_area.grid(row=1, column=0, sticky="nsew", padx=20, pady=16)
         self.content_area.grid_columnconfigure(0, weight=1)
 
-
-        self.pages:dict[str,ctk.CTkFrame]={
-            "dashboard":DashboardPage(self.content_area),
-            "journal":KataLogPage(self.content_area, app=self),
-            "review":WeeklyReviewPage(self.content_area),
-            "profile":ProfilePage(self.content_area),
-            "settings":SettingsPage(self.content_area)
+        self.pages: dict[str, ctk.CTkFrame] = {
+            "dashboard": DashboardPage(self.content_area),
+            "journal":   KataLogPage(self.content_area, app=self),
+            "review":    WeeklyReviewPage(self.content_area),
+            "profile":   ProfilePage(self.content_area),
+            "settings":  SettingsPage(self.content_area),
         }
         for page in self.pages.values():
             page.grid(row=0, column=0, sticky="nsew")
 
 
-
-    def show_page(self, key:str):
-        titles={
-            "dashboard":"Dashboard",
-            "journal":"Journal",
-            "review":"Weekly Review",
-            "profile":"Profile",
-            "settings":"Settings"
+    def show_page(self, key: str):
+        titles = {
+            "dashboard": "Dashboard",
+            "journal":   "Your Kata",
+            "review":    "Weekly Review",
+            "profile":   "Profile",
+            "settings":  "Settings",
         }
+        self.current_page = key    # track active page
 
-        self.page_title_label.configure(text=titles.get(key,key.title()))
+        # hide refresh button on pages that don't need it
+        if key in ("journal", "settings"):
+            self.refresh_btn.pack_forget()
+        else:
+            self.refresh_btn.pack(side="right", padx=16)
 
+        self.page_title_label.configure(text=titles.get(key, key.title()))
         for k, btn in self.nav_buttons.items():
-            btn.set_active(k==key)
-
+            btn.set_active(k == key)
         self.pages[key].tkraise()
+
+    def refresh_current_page(self):
+        key = getattr(self, "current_page", "dashboard")
+        page = self.pages.get(key)
+        if page and hasattr(page, "refresh"):
+            page.refresh()
 
     def refresh_dashboard(self):
         self.pages["dashboard"].refresh()

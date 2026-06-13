@@ -126,9 +126,8 @@ class DashboardPage(ctk.CTkFrame):
                 build_entry_row(recent_container, entry)
 
     def refresh(self):
-        # destroy only the dynamic sections, keep intro
         children = self.winfo_children()
-        for widget in children[1:]:  # skip index 0 which is the intro_frame
+        for widget in children[1:]:  
             widget.destroy()
         self._build_stats()
         self._build_streak()

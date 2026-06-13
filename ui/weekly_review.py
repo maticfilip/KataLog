@@ -140,3 +140,10 @@ class WeeklyReviewPage(ctk.CTkFrame):
             e for e in entries
             if datetime.strptime(e["timestamp"][:10], "%Y-%m-%d").date() >= start_of_week
         ]
+    
+    def refresh(self):
+        for widget in self.winfo_children():
+            widget.destroy()
+        self._build_review_card()
+        self._build_stats()
+        self._build_kata_list()

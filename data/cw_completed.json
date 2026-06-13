@@ -1,5 +1,77 @@
 [
   {
+    "id": "54ba84be607a92aa900000f1",
+    "name": "Isograms",
+    "slug": "isograms",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-06-12T19:37:40.488Z"
+  },
+  {
+    "id": "568ff914fc7a40a18500005c",
+    "name": "Distance from the average",
+    "slug": "distance-from-the-average",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-06-12T19:28:12.502Z"
+  },
+  {
+    "id": "5464cbfb1e0c08e9b3000b3e",
+    "name": "Happy numbers",
+    "slug": "happy-numbers-6",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-06-08T12:41:02.694Z"
+  },
+  {
+    "id": "5208f99aee097e6552000148",
+    "name": "Break camelCase",
+    "slug": "break-camelcase",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-06-08T12:37:36.473Z"
+  },
+  {
+    "id": "54c27a33fb7da0db0100040e",
+    "name": "You're a square!",
+    "slug": "youre-a-square",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-06-02T16:20:03.176Z"
+  },
+  {
+    "id": "5467e4d82edf8bbf40000155",
+    "name": "Descending Order",
+    "slug": "descending-order",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-06-02T16:11:06.362Z"
+  },
+  {
+    "id": "5a3e1319b6486ac96f000049",
+    "name": "Simple consecutive pairs",
+    "slug": "simple-consecutive-pairs",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-05-21T16:48:54.652Z"
+  },
+  {
+    "id": "6411b91a5e71b915d237332d",
+    "name": "Valid Parentheses",
+    "slug": "valid-parentheses-1",
+    "completedLanguages": [
+      "python"
+    ],
+    "completedAt": "2026-05-21T16:36:38.371Z"
+  },
+  {
     "id": "55f8a9c06c018a0d6e000132",
     "name": "Regex validate PIN code",
     "slug": "regex-validate-pin-code",

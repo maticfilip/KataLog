@@ -2,28 +2,28 @@
   "id": "69d29e43c31b8c844263e893",
   "username": "maticfilip",
   "name": "Filip Mati\u0107",
-  "honor": 61,
+  "honor": 113,
   "clan": null,
   "leaderboardPosition": null,
   "skills": null,
   "ranks": {
     "overall": {
-      "rank": -7,
-      "name": "7 kyu",
-      "color": "white",
-      "score": 51
+      "rank": -6,
+      "name": "6 kyu",
+      "color": "yellow",
+      "score": 76
     },
     "languages": {
       "python": {
-        "rank": -7,
-        "name": "7 kyu",
-        "color": "white",
-        "score": 51
+        "rank": -6,
+        "name": "6 kyu",
+        "color": "yellow",
+        "score": 76
       }
     }
   },
   "codeChallenges": {
     "totalAuthored": 0,
-    "totalCompleted": 22
+    "totalCompleted": 30
   }
 }

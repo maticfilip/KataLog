@@ -25,7 +25,7 @@ class ProfilePage(ctk.CTkFrame):
         self.build_profile_card()
         self.build_stats()
         self.build_charts()
-        self.build_connect_card()
+        # self.build_connect_card()
 
 
     def connect(self):
@@ -168,7 +168,7 @@ class ProfilePage(ctk.CTkFrame):
         card.grid(row=0, column=0, padx=(0, 6), sticky="nsew")
 
         ctk.CTkLabel(
-            card, text="COMPLETED BY DIFFICULTY",
+            card, text="COMPLETED BY DIFFICULTY (Only taka that was logged into the app)",
             font=ctk.CTkFont(size=11), text_color="gray60"
         ).pack(anchor="w", padx=14, pady=(12, 10))
 
@@ -266,36 +266,45 @@ class ProfilePage(ctk.CTkFrame):
                 font=ctk.CTkFont(size=11), text_color="gray50"
             ).pack(side="right")
 
+    def refresh(self):
+        for widget in self.winfo_children():
+            widget.destroy()
+        self.build_profile_card()
+        self.build_stats()
+        self.build_charts()
+        self.build_connect_card()
 
-    def build_connect_card(self):
-        card = ctk.CTkFrame(self, fg_color="gray17", corner_radius=10, border_width=1, border_color="gray30")
-        card.pack(fill="x", pady=(0, 12))
 
-        ctk.CTkLabel(
-            card, text="Connect your Codewars account",
-            font=ctk.CTkFont(size=13, weight="bold")
-        ).pack(pady=(16, 4))
 
-        ctk.CTkLabel(
-            card, text="Enter your Codewars username to sync your profile and stats",
-            font=ctk.CTkFont(size=11), text_color="gray50"
-        ).pack(pady=(0, 12))
+    # def build_connect_card(self):
+    #     card = ctk.CTkFrame(self, fg_color="gray17", corner_radius=10, border_width=1, border_color="gray30")
+    #     card.pack(fill="x", pady=(0, 12))
 
-        input_row = ctk.CTkFrame(card, fg_color="transparent")
-        input_row.pack(pady=(0, 16))
+    #     ctk.CTkLabel(
+    #         card, text="Connect your Codewars account",
+    #         font=ctk.CTkFont(size=13, weight="bold")
+    #     ).pack(pady=(16, 4))
 
-        self.username_input = ctk.CTkEntry(
-            input_row,
-            placeholder_text="Your Codewars username",
-            width=220, height=34
-        )
-        self.username_input.pack(side="left", padx=(0, 8))
+    #     ctk.CTkLabel(
+    #         card, text="Enter your Codewars username to sync your profile and stats",
+    #         font=ctk.CTkFont(size=11), text_color="gray50"
+    #     ).pack(pady=(0, 12))
 
-        ctk.CTkButton(
-            input_row,
-            text="Connect",
-            width=90, height=34,
-            fg_color="#534AB7",
-            hover_color="#3C3489",
-            command=self.connect
-        ).pack(side="left")
+    #     input_row = ctk.CTkFrame(card, fg_color="transparent")
+    #     input_row.pack(pady=(0, 16))
+
+    #     self.username_input = ctk.CTkEntry(
+    #         input_row,
+    #         placeholder_text="Your Codewars username",
+    #         width=220, height=34
+    #     )
+    #     self.username_input.pack(side="left", padx=(0, 8))
+
+    #     ctk.CTkButton(
+    #         input_row,
+    #         text="Connect",
+    #         width=90, height=34,
+    #         fg_color="#534AB7",
+    #         hover_color="#3C3489",
+    #         command=self.connect
+    #     ).pack(side="left")
