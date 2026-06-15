@@ -110,6 +110,51 @@ class KataLogPage(ctk.CTkFrame):
             self.solution_input.pack(fill="x",padx=14, pady=(0,8))
             self.solution_input.insert("1.0", "Paste your solution code here.")
 
+            # AI help row — sits above the log button
+            ai_row = ctk.CTkFrame(card, fg_color="transparent")
+            ai_row.pack(fill="x", padx=14, pady=(0, 8))
+
+            ctk.CTkLabel(
+                ai_row,
+                text="AI",
+                font=ctk.CTkFont(size=11),
+                text_color="gray50"
+            ).pack(side="left", padx=(0, 8))
+
+            ctk.CTkButton(
+                ai_row,
+                text="Explain this topic",
+                width=140, height=28,
+                fg_color="transparent",
+                border_width=1,
+                text_color="#AFA9EC",
+                border_color="#534AB7",
+                hover_color="#2A2660",
+                font=ctk.CTkFont(size=12),
+                command=self._explain_topic
+            ).pack(side="left", padx=(0, 6))
+
+            ctk.CTkButton(
+                ai_row,
+                text="Save to Theory",
+                width=120, height=28,
+                fg_color="transparent",
+                border_width=1,
+                text_color="gray50",
+                border_color="gray30",
+                font=ctk.CTkFont(size=12),
+                command=self._save_to_theory
+            ).pack(side="left")
+
+            self.ai_status_label = ctk.CTkLabel(
+                ai_row, text="",
+                font=ctk.CTkFont(size=11), text_color="gray50"
+            )
+            self.ai_status_label.pack(side="left", padx=(10, 0))
+
+            # store pending theory for saving
+            self._pending_theory = None
+
             btn_row = ctk.CTkFrame(card, fg_color="transparent")
             btn_row.pack(fill="x", padx=14, pady=(0, 12))
             ctk.CTkButton(
@@ -222,4 +267,39 @@ class KataLogPage(ctk.CTkFrame):
         for entry in entries:
             build_entry_row(self.feed_frame, entry)
 
-    
+    def _explain_topic(self):
+        kata_name = self.kata_name_input.get().strip()
+        if not kata_name:
+            self.ai_status_label.configure(
+                text="Enter a kata name first.", text_color="#E24B4A"
+            )
+            return
+        self.ai_status_label.configure(text="Thinking...", text_color="gray50")
+        # placeholder until LLM is wired
+        self._pending_theory = {
+            "topic": kata_name,
+            "category": "Algorithms",
+            "explanation": f"[ AI explanation for '{kata_name}' will appear here once the LLM is connected. ]",
+            "related_kata": kata_name,
+        }
+        self.ai_status_label.configure(
+            text="Ready to save to Theory.", text_color="#1D9E75"
+        )
+
+    def _save_to_theory(self):
+        if not self._pending_theory:
+            self.ai_status_label.configure(
+                text="Click 'Explain this topic' first.", text_color="#E24B4A"
+            )
+            return
+        from core.theory import add_topic
+        add_topic(
+            topic=self._pending_theory["topic"],
+            category=self._pending_theory["category"],
+            explanation=self._pending_theory["explanation"],
+            related_kata=self._pending_theory.get("related_kata", ""),
+        )
+        self._pending_theory = None
+        self.ai_status_label.configure(
+            text="Saved to Theory!", text_color="#1D9E75"
+        )

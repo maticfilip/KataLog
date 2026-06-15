@@ -6,6 +6,7 @@ from ui.dashboard import DashboardPage
 from ui.weekly_review import WeeklyReviewPage
 from ui.profile import ProfilePage
 from ui.settings import SettingsPage
+from ui.theory import TheoryPage
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
@@ -94,7 +95,8 @@ class App(ctk.CTk):
             ("journal", " Your Kata"),
             ("review", " Review"),
             ("profile", " Your Profile"),
-            ("settings","Settings")
+            ("settings","Settings"),
+            ("theory","Theory")
         ]
         
         for key, label in nav_items:
@@ -149,6 +151,7 @@ class App(ctk.CTk):
             "journal":   KataLogPage(self.content_area, app=self),
             "review":    WeeklyReviewPage(self.content_area),
             "profile":   ProfilePage(self.content_area),
+            "theory":   TheoryPage(self.content_area),
             "settings":  SettingsPage(self.content_area),
         }
         for page in self.pages.values():
@@ -161,6 +164,7 @@ class App(ctk.CTk):
             "journal":   "Your Kata",
             "review":    "Weekly Review",
             "profile":   "Profile",
+            "theory":   "Theory",
             "settings":  "Settings",
         }
         self.current_page = key    # track active page
