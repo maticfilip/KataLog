@@ -97,6 +97,15 @@ def build_entry_row(parent, entry: dict):
         corner_radius=99,
     ).pack(side="left", padx=(0, 6))
 
+    lang = entry.get("language", "")
+    if lang:
+        ctk.CTkLabel(
+            top, text=f" {lang} ",
+            font=ctk.CTkFont(size=11),
+            fg_color="gray25", text_color="gray60",
+            corner_radius=4,
+        ).pack(side="left", padx=(0, 6))
+
     ctk.CTkLabel(
         top, text=entry["timestamp"][11:16],
         font=ctk.CTkFont(size=11), text_color="gray50",

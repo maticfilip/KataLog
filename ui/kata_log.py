@@ -3,7 +3,7 @@ import json
 import os
 from datetime import date, datetime
 from ui.components import build_entry_row, STATUS_COLORS, DIFF_COLORS
-from core.kata_log import add_entry, get_entries, search_entries, group_by_day, DIFFICULTIES, STATUSES
+from core.kata_log import add_entry, get_entries, search_entries, group_by_day, DIFFICULTIES, STATUSES, LANGUAGES
 
 class KataLogPage(ctk.CTkFrame):
     def __init__(self, master,app=None, **kwargs):
@@ -98,6 +98,25 @@ class KataLogPage(ctk.CTkFrame):
 
             self.select_status(STATUSES[0])
 
+            lang_row = ctk.CTkFrame(card, fg_color="transparent")
+            lang_row.pack(fill="x", padx=14, pady=(0, 8))
+
+            ctk.CTkLabel(
+                lang_row, text="Language",
+                font=ctk.CTkFont(size=11), text_color="gray60"
+            ).pack(side="left", padx=(0, 6))
+
+            self.selected_language = LANGUAGES[0]
+            self.lang_var = ctk.StringVar(value=LANGUAGES[0])
+
+            ctk.CTkOptionMenu(
+                lang_row,
+                values=LANGUAGES,
+                variable=self.lang_var,
+                width=130, height=26,
+                command=lambda l: setattr(self, "selected_language", l)
+            ).pack(side="left")
+
             self.description_input=ctk.CTkTextbox(card, height=70, corner_radius=6)
             self.description_input.pack(fill="x", padx=14, pady=(0,8))
             self.description_input.insert("1.0", "Paste the description of the task here.")
@@ -185,8 +204,8 @@ class KataLogPage(ctk.CTkFrame):
     def save_entry(self):
         kata_name = self.kata_name_input.get().strip()
         notes = self.notes_input.get("1.0", "end").strip()
-        code=self.solution_input.get("1.0","end").strip()
-        description=self.description_input.get("1.0","end").strip()
+        code = self.solution_input.get("1.0", "end").strip()
+        description = self.description_input.get("1.0", "end").strip()
 
         if not kata_name:
             self.kata_name_input.configure(placeholder_text_color="red")
@@ -196,13 +215,14 @@ class KataLogPage(ctk.CTkFrame):
             notes = ""
         if code == "Paste your solution code here.":
             code = ""
-        if description=="Paste the description of the task here.":
-            description=""
+        if description == "Paste the description of the task here.":
+            description = ""
 
         add_entry(
             kata_name=kata_name,
             difficulty=self.selected_difficulty,
             status=self.selected_status,
+            language=self.selected_language,    # ← added
             description=description,
             code=code,
             notes=notes
@@ -217,6 +237,8 @@ class KataLogPage(ctk.CTkFrame):
         self.solution_input.insert("1.0", "Paste your solution code here.")
         self.select_difficulty(DIFFICULTIES[0])
         self.select_status(STATUSES[0])
+        self.lang_var.set(LANGUAGES[0])         # ← reset language
+        self.selected_language = LANGUAGES[0]   # ← reset selected
 
         self.build_feed()
 
