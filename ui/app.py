@@ -61,19 +61,105 @@ class NavButton(ctk.CTkFrame):
                 font=ctk.CTkFont(weight="normal")
             )
 
+class LandingPage(ctk.CTkFrame):
+    def __init__(self, master,  on_done, **kwargs):
+        super().__init__(master, fg_color="#0F0F0F", corner_radius=0, **kwargs)
+        self.on_done=on_done
+        self.build()
+
+    def build(self):
+        # self.grid_rowconfigure(0, weight=1)
+        # self.grid_rowconfigure(2, weight=1)
+        # self.grid_columnconfigure(0, weight=1)
+
+        self.pack_propagate(False)
+
+        center = ctk.CTkFrame(self, fg_color="transparent")
+        center.place(relx=0.5, rely=0.5, anchor="center")
+
+        ctk.CTkLabel(
+            center,
+            text="KataLog",
+            font=ctk.CTkFont(size=52, weight="bold"),
+            text_color="#EEEDFE"
+        ).pack(pady=(0, 8))
+
+        ctk.CTkFrame(
+            center,
+            width=60, height=3,
+            corner_radius=99,
+            fg_color="#534AB7"
+        ).pack(pady=(0, 28))
+
+        ctk.CTkLabel(
+            center,
+            text="Your personal Codewars companion.",
+            font=ctk.CTkFont(size=16),
+            text_color="gray60"
+        ).pack(pady=(0, 6))
+
+        ctk.CTkLabel(
+            center,
+            text="Log what you learn from each kata, track your daily streak,\nget AI-powered feedback on your solutions — all running locally.",
+            font=ctk.CTkFont(size=13),
+            text_color="gray40",
+            justify="center"
+        ).pack(pady=(0, 48))
+
+        ctk.CTkButton(
+            center,
+            text="Get started →",
+            width=180, height=44,
+            font=ctk.CTkFont(size=14, weight="bold"),
+            fg_color="#534AB7",
+            hover_color="#3C3489",
+            corner_radius=10,
+            command=self._enter
+        ).pack()
+
+        ctk.CTkLabel(
+            center,
+            text="v0.1.0  ·  built with Python & CustomTkinter",
+            font=ctk.CTkFont(size=11),
+            text_color="gray30"
+        ).pack(pady=(32, 0))
+
+    def _enter(self):
+        self._fade_out()
+
+    def _fade_out(self, alpha: float = 1.0):
+        if alpha <= 0.0:
+            self.destroy()
+            self.on_done()
+            return
+        self.master.attributes("-alpha", alpha)
+        self.after(16, lambda: self._fade_out(round(alpha - 0.06, 2)))
+
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.geometry("960x620")
         self.minsize(800,500)
-        self.title("Codewars journal and assistant")
+        self.title("KataLog")
 
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_rowconfigure(0, weight=1)
+
+        self.show_landing()
+
+    def show_landing(self):
+        self.landing=LandingPage(self, on_done=self.launch_app)
+        self.landing.place(x=0, y=0, relwidth=1, relheight=1)
+
+    def launch_app(self):
+        self.attributes("-alpha",1.0)
+
+        self.grid_columnconfigure(0, weight=0)
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
         self.build_sidebar()
         self.build_main()
-
         self.show_page("dashboard")
 
 
