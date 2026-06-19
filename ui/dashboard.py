@@ -5,8 +5,9 @@ from ui.components import build_entry_row, STATUS_COLORS, DIFF_COLORS
 
 
 class DashboardPage(ctk.CTkFrame):
-    def __init__(self, master, **kwargs):
+    def __init__(self, master,app=None, **kwargs):
         super().__init__(master, fg_color="transparent", **kwargs)
+        self.app=app
         self._build_intro()
         self._build_stats()
         self._build_streak()

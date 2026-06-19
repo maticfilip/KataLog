@@ -18,8 +18,9 @@ CATEGORY_COLORS = {
 
 
 class TheoryPage(ctk.CTkFrame):
-    def __init__(self, master, **kwargs):
+    def __init__(self, master,app=None, **kwargs):
         super().__init__(master, fg_color="transparent", **kwargs)
+        self.app=app
 
         self.selected_category = None
         self.expanded_cards = set()

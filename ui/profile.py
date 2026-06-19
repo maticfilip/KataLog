@@ -19,9 +19,9 @@ LANG_COLORS = [
 
 
 class ProfilePage(ctk.CTkFrame):
-    def __init__(self, master, **kwargs):
+    def __init__(self, master, app=None, **kwargs):
         super().__init__(master, fg_color="transparent", **kwargs)
-
+        self.app=app
         self.build_profile_card()
         self.build_stats()
         self.build_charts()
@@ -55,7 +55,7 @@ class ProfilePage(ctk.CTkFrame):
         self.build_profile_card()
         self.build_stats()
         self.build_charts()
-        self.build_connect_card()
+        # self.build_connect_card()
 
     # ── Connected profile header ──────────────────────────────────────────────
 
@@ -272,7 +272,7 @@ class ProfilePage(ctk.CTkFrame):
         self.build_profile_card()
         self.build_stats()
         self.build_charts()
-        self.build_connect_card()
+        # self.build_connect_card()
 
 
 

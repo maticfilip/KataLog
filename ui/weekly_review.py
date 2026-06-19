@@ -4,8 +4,9 @@ from core.kata_log import get_entries
 from ui.components import STATUS_COLORS, DIFF_COLORS
 
 class WeeklyReviewPage(ctk.CTkFrame):
-    def __init__(self, master, **kwargs):
+    def __init__(self, master, app=None, **kwargs):
         super().__init__(master, fg_color="transparent", **kwargs)
+        self.app=app
         self._build_stats()
         self._build_kata_list()
         self._build_review_card()
@@ -101,6 +102,8 @@ class WeeklyReviewPage(ctk.CTkFrame):
         card = ctk.CTkFrame(self)
         card.pack(fill="x", pady=(0, 12))
 
+        ai_enabled = self.app.ai_enabled if self.app else True
+
         ctk.CTkLabel(
             card, text="AI WEEKLY REVIEW",
             font=ctk.CTkFont(size=11), text_color="gray60"
@@ -112,15 +115,22 @@ class WeeklyReviewPage(ctk.CTkFrame):
             state="normal", font=ctk.CTkFont(size=13)
         )
         self.output_box.pack(fill="x", padx=14, pady=(0, 8))
-        self.output_box.insert("1.0", "Your AI review will appear here.\nClick generate to summarise your week.")
+
+        if ai_enabled:
+            self.output_box.insert("1.0", "Your AI review will appear here.\nClick generate to summarise your week.")
+        else:
+            self.output_box.insert("1.0", "AI features are disabled.\nEnable Ollama and restart the app to use this feature.")
+
         self.output_box.configure(state="disabled")
 
         ctk.CTkButton(
             card,
             text="Generate weekly review",
             height=36,
-            fg_color="#534AB7",
-            hover_color="#3C3489",
+            fg_color="#534AB7" if ai_enabled else "gray25",
+            hover_color="#3C3489" if ai_enabled else "gray25",
+            text_color="white" if ai_enabled else "gray50",
+            state="normal" if ai_enabled else "disabled",
             command=self._generate
         ).pack(fill="x", padx=14, pady=(0, 14))
 

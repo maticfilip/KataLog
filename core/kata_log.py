@@ -8,6 +8,7 @@ KATA_FILE="data/kata_log.json"
 
 DIFFICULTIES=["8kyu","7kyu","6kyu","5kyu","4kyu","3kyu","2kyu","1kyu"]
 STATUSES=["Solved","Struggled","Gave up","Learning"]
+LANGUAGES=["Python","JavaScript","TypeScript","Java","C#","C++","Ruby","Go","Rust","Other"]
 
 def load():
     if not os.path.exists(KATA_FILE):
@@ -23,7 +24,7 @@ def save(entries):
     with open(KATA_FILE, "w") as f:
         json.dump(entries, f, indent=2)
 
-def add_entry(kata_name, difficulty,status,description,notes,code):
+def add_entry(kata_name, difficulty,status,language,description,notes,code):
     entries=load()
     entries.append({
         "id":datetime.now().strftime("%Y%m%d-%H%M%S"),
@@ -31,6 +32,7 @@ def add_entry(kata_name, difficulty,status,description,notes,code):
         "kata_name":kata_name,
         "difficulty":difficulty,
         "status":status,
+        "language":language,
         "description":description,
         "notes":notes,
         "code":code

@@ -6,8 +6,9 @@ from core.kata_log import export_json, export_csv, KATA_FILE
 
 
 class SettingsPage(ctk.CTkFrame):
-    def __init__(self, master, **kwargs):
+    def __init__(self, master, app=None, **kwargs):
         super().__init__(master, fg_color="transparent", **kwargs)
+        self.app=app
         self._build_account()
         self._build_appearance()
         self._build_data()
@@ -60,35 +61,42 @@ class SettingsPage(ctk.CTkFrame):
                 command=self._disconnect
             ).pack(side="right")
 
+            # status label still needed even when connected (for sync feedback)
+            self.status_label = ctk.CTkLabel(
+                card, text="", font=ctk.CTkFont(size=11)
+            )
+            self.status_label.pack(anchor="w", padx=14, pady=(8, 8))
+
         else:
             ctk.CTkLabel(
                 status_row, text="Not connected",
                 font=ctk.CTkFont(size=13), text_color="gray50"
             ).pack(side="left")
 
-        ctk.CTkFrame(card, height=1, fg_color="gray25").pack(fill="x", padx=14, pady=(4, 8))
+            # connect input only shown when NOT connected
+            ctk.CTkFrame(card, height=1, fg_color="gray25").pack(fill="x", padx=14, pady=(4, 8))
 
-        input_row = ctk.CTkFrame(card, fg_color="transparent")
-        input_row.pack(fill="x", padx=14, pady=(0, 12))
+            input_row = ctk.CTkFrame(card, fg_color="transparent")
+            input_row.pack(fill="x", padx=14, pady=(0, 12))
 
-        self.username_input = ctk.CTkEntry(
-            input_row,
-            placeholder_text="Codewars username",
-            height=32
-        )
-        self.username_input.pack(side="left", fill="x", expand=True, padx=(0, 8))
+            self.username_input = ctk.CTkEntry(
+                input_row,
+                placeholder_text="Codewars username",
+                height=32
+            )
+            self.username_input.pack(side="left", fill="x", expand=True, padx=(0, 8))
 
-        ctk.CTkButton(
-            input_row, text="Connect",
-            width=90, height=32,
-            fg_color="#534AB7", hover_color="#3C3489",
-            command=self._connect
-        ).pack(side="left")
+            ctk.CTkButton(
+                input_row, text="Connect",
+                width=90, height=32,
+                fg_color="#534AB7", hover_color="#3C3489",
+                command=self._connect
+            ).pack(side="left")
 
-        self.status_label = ctk.CTkLabel(
-            card, text="", font=ctk.CTkFont(size=11)
-        )
-        self.status_label.pack(anchor="w", padx=14, pady=(0, 8))
+            self.status_label = ctk.CTkLabel(
+                card, text="", font=ctk.CTkFont(size=11)
+            )
+            self.status_label.pack(anchor="w", padx=14, pady=(0, 8))
 
 
     def _build_appearance(self):
@@ -263,6 +271,8 @@ class SettingsPage(ctk.CTkFrame):
             return
         self.status_label.configure(text="Connected!", text_color="#1D9E75")
         self.after(1000, self._rebuild)
+        if self.app:
+            self.app.refresh_profile()
 
     def _sync(self):
         profile = load_profile()
@@ -278,8 +288,22 @@ class SettingsPage(ctk.CTkFrame):
         confirm_delete(
             root,
             "your Codewars account",
-            on_confirm=lambda: [disconnect(), self._rebuild()]
+            on_confirm=self._do_disconnect
         )
+
+    def _do_disconnect(self):
+        disconnect()
+        self._rebuild()
+        if self.app:
+            self.app.refresh_profile()
+
+    def _do_clear_cw_cache(self):
+        disconnect()
+        self.status_label.configure(
+            text="Codewars cache cleared.", text_color="#E24B4A"
+        )
+        if self.app:
+            self.app.refresh_profile()
 
     def _export_json(self):
         path = filedialog.asksaveasfilename(

@@ -133,6 +133,8 @@ class KataLogPage(ctk.CTkFrame):
             ai_row = ctk.CTkFrame(card, fg_color="transparent")
             ai_row.pack(fill="x", padx=14, pady=(0, 8))
 
+            ai_enabled=self.app.ai_enabled if self.app else True
+
             ctk.CTkLabel(
                 ai_row,
                 text="AI",
@@ -150,8 +152,15 @@ class KataLogPage(ctk.CTkFrame):
                 border_color="#534AB7",
                 hover_color="#2A2660",
                 font=ctk.CTkFont(size=12),
+                state="normal" if ai_enabled else "disabled",
                 command=self._explain_topic
             ).pack(side="left", padx=(0, 6))
+
+            if not ai_enabled:
+                ctk.CTkLabel(
+                    ai_row, text="(AI disabled - enable Ollama in Settings)",
+                    font=ctk.CTkFont(size=11), text_color="gray40"
+                ).pack(side="left", padx=(10,0))
 
             ctk.CTkButton(
                 ai_row,
