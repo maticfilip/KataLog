@@ -10,6 +10,7 @@ class SettingsPage(ctk.CTkFrame):
         super().__init__(master, fg_color="transparent", **kwargs)
         self.app=app
         self._build_account()
+        self._build_ai_status()
         self._build_appearance()
         self._build_data()
         self._build_about()
@@ -195,6 +196,108 @@ class SettingsPage(ctk.CTkFrame):
             command=self._clear_cw_cache
         )
 
+    def _build_ai_status(self):
+        from core.llm import is_ollama_running, get_available_models, get_selected_model, set_selected_model
+
+        card = ctk.CTkFrame(self)
+        card.pack(fill="x", pady=(0, 12))
+
+        ctk.CTkLabel(
+            card, text="AI ASSISTANT",
+            font=ctk.CTkFont(size=11), text_color="gray60"
+        ).pack(anchor="w", padx=14, pady=(12, 10))
+
+        running = is_ollama_running()
+        models = get_available_models() if running else []
+
+        status_row = ctk.CTkFrame(card, fg_color="transparent")
+        status_row.pack(fill="x", padx=14, pady=(0, 8))
+
+        if running:
+            ctk.CTkLabel(
+                status_row, text="  Ollama running  ",
+                font=ctk.CTkFont(size=11),
+                fg_color="#0A2E22", text_color="#5DCAA5",
+                corner_radius=99
+            ).pack(side="left")
+        else:
+            ctk.CTkLabel(
+                status_row, text="  Ollama not running  ",
+                font=ctk.CTkFont(size=11),
+                fg_color="#3D1515", text_color="#F09595",
+                corner_radius=99
+            ).pack(side="left")
+
+        ctk.CTkButton(
+            status_row, text="Recheck",
+            width=90, height=28,
+            fg_color="transparent", border_width=1,
+            text_color="gray60", border_color="gray30",
+            command=self._recheck_ai
+        ).pack(side="right")
+
+        # ── model picker — only shown when models exist ─────────────────────────
+        if models:
+            model_row = ctk.CTkFrame(card, fg_color="transparent")
+            model_row.pack(fill="x", padx=14, pady=(8, 8))
+
+            ctk.CTkLabel(
+                model_row, text="Model",
+                font=ctk.CTkFont(size=13)
+            ).pack(side="left")
+
+            current = get_selected_model()
+            if current not in models:
+                current = models[0]  # fall back if saved model got removed
+
+            self.model_var = ctk.StringVar(value=current)
+
+            ctk.CTkOptionMenu(
+                model_row,
+                values=models,
+                variable=self.model_var,
+                width=180, height=28,
+                command=self._on_model_change
+            ).pack(side="right")
+
+        elif running:
+            ctk.CTkLabel(
+                card, text="No models installed — run: ollama pull phi3:mini",
+                font=ctk.CTkFont(size=12), text_color="#EF9F27"
+            ).pack(anchor="w", padx=14, pady=(0, 8))
+
+        self.ai_status_label = ctk.CTkLabel(
+            card, text="", font=ctk.CTkFont(size=11)
+        )
+        self.ai_status_label.pack(anchor="w", padx=14, pady=(0, 8))
+
+    def _recheck_ai(self):
+        from core.llm import is_ollama_running
+
+        if is_ollama_running():
+            if self.app:
+                self.app.ai_enabled = True
+                if hasattr(self.app.pages.get("journal"), "refresh"):
+                    self.app.pages["journal"].refresh()
+                if hasattr(self.app.pages.get("review"), "refresh"):
+                    self.app.pages["review"].refresh()
+            self.ai_status_label.configure(
+                text="Ollama detected! AI features enabled.", text_color="#1D9E75"
+            )
+            self.after(800, self._rebuild)
+        else:
+            self.ai_status_label.configure(
+                text="Still not detected. Make sure Ollama is running.", text_color="#E24B4A"
+            )
+
+    def _on_model_change(self, model: str):
+        from core.llm import set_selected_model
+        set_selected_model(model)
+        self.ai_status_label.configure(
+            text=f"Using {model} for AI features.", text_color="#1D9E75"
+        )
+
+
     def _build_danger_row(self, parent, title, subtitle, btn_text, command):
         row = ctk.CTkFrame(parent, fg_color="transparent")
         row.pack(fill="x", padx=14, pady=(0, 10))
@@ -364,6 +467,7 @@ class SettingsPage(ctk.CTkFrame):
         for widget in self.winfo_children():
             widget.destroy()
         self._build_account()
+        self._build_ai_status()
         self._build_appearance()
         self._build_data()
         self._build_about()

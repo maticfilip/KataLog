@@ -334,3 +334,11 @@ class KataLogPage(ctk.CTkFrame):
         self.ai_status_label.configure(
             text="Saved to Theory!", text_color="#1D9E75"
         )
+
+    def refresh(self):
+        for widget in self.winfo_children():
+            widget.destroy()
+        self.build_search()
+        self.build_write_card()
+        self.build_feed_area()
+        self.build_feed()
