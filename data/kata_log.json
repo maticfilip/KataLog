@@ -108,5 +108,16 @@
     "description": "Paste the description of the task here.afass",
     "notes": "What did you learn or struggle with?asfasf",
     "code": "Paste your solution code here.asfasf"
+  },
+  {
+    "id": "20260625-203611",
+    "timestamp": "2026-06-25 20:36:11",
+    "kata_name": "Isograms",
+    "difficulty": "7kyu",
+    "status": "Solved",
+    "language": "Python",
+    "description": "An isogram is a word that has no repeating letters, consecutive or non-consecutive. Implement a function that determines whether a string that contains only letters is an isogram. Assume the empty string is an isogram. Ignore letter case.",
+    "notes": "",
+    "code": "def is_isogram(string):\n    string=string.lower()\n    return len(string)==len(set(string))"
   }
 ]

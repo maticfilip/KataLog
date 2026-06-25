@@ -305,16 +305,53 @@ class KataLogPage(ctk.CTkFrame):
                 text="Enter a kata name first.", text_color="#E24B4A"
             )
             return
+        ai_enabled = self.app.ai_enabled if self.app else True
+        if not ai_enabled:
+            self.ai_status_label.configure(
+                text="AI is disabled. Enable Ollama in Settings.", text_color="#E24B4A"
+            )
+            return
+
+        difficulty = self.selected_difficulty
+        description = self.description_input.get("1.0", "end").strip()
+        code = self.solution_input.get("1.0", "end").strip()
+
+        if description == "Paste the description of the task here.":
+            description = ""
+        if code == "Paste your solution code here.":
+            code = ""
+
         self.ai_status_label.configure(text="Thinking...", text_color="gray50")
-        # placeholder until LLM is wired
-        self._pending_theory = {
-            "topic": kata_name,
-            "category": "Algorithms",
-            "explanation": f"[ AI explanation for '{kata_name}' will appear here once the LLM is connected. ]",
-            "related_kata": kata_name,
+
+        from core.llm import explain_topic
+
+        def handle_result(result: dict):
+            self.after(0, lambda: self.on_explanation_ready(kata_name, result))
+
+        def handle_error(msg: str):
+            self.after(0, lambda: self.ai_status_label.configure(
+                text=f"Error: {msg}", text_color="#E24B4A"
+            ))
+
+        explain_topic(
+            kata_name=kata_name,
+            difficulty=difficulty,
+            description=description,
+            code=code,
+            on_complete=handle_result,
+            on_error=handle_error
+        )
+
+    def on_explanation_ready(self, kata_name, result):
+        self._pending_theory={
+            "topic":result.get("topic", kata_name),
+            "category":result.get("category","Other"),
+            "explanation":result.get("explanation",""),
+            "related_kata":kata_name
         }
         self.ai_status_label.configure(
-            text="Ready to save to Theory.", text_color="#1D9E75"
+            text=f"Explained '{self._pending_theory['topic']}'-ready to save.",
+            text_color="#1D9E75"
         )
 
     def _save_to_theory(self):
