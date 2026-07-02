@@ -347,7 +347,8 @@ class KataLogPage(ctk.CTkFrame):
             "topic":result.get("topic", kata_name),
             "category":result.get("category","Other"),
             "explanation":result.get("explanation",""),
-            "related_kata":kata_name
+            "related_kata":kata_name,
+            "related_kata_id":""
         }
         self.ai_status_label.configure(
             text=f"Explained '{self._pending_theory['topic']}'-ready to save.",
@@ -366,11 +367,15 @@ class KataLogPage(ctk.CTkFrame):
             category=self._pending_theory["category"],
             explanation=self._pending_theory["explanation"],
             related_kata=self._pending_theory.get("related_kata", ""),
+            related_kata_id=self._pending_theory.get("related_kata_id", ""),
         )
         self._pending_theory = None
         self.ai_status_label.configure(
             text="Saved to Theory!", text_color="#1D9E75"
         )
+
+        if self.app and "theory" in self.app.pages:
+            self.app.pages["theory"].refresh()
 
     def refresh(self):
         for widget in self.winfo_children():

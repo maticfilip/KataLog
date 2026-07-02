@@ -1,0 +1,20 @@
+[
+  {
+    "id": "20260702-114646",
+    "timestamp": "2026-07-02 11:46:46",
+    "topic": "String Manipulation",
+    "category": "Algorithms",
+    "explanation": "An isogram is a word that contains no repeating characters (letters). The solution converts the input string to lowercase and uses a set to eliminate duplicate characters, effectively checking for duplicates in the string. This approach leverages the properties of sets to efficiently track unique elements, making it a straightforward solution to the problem. The key concept is understanding how sets handle duplicates and how string manipulation can be used to analyze the uniqueness of characters.",
+    "related_kata": "Isograms",
+    "related_kata_id": ""
+  },
+  {
+    "id": "20260702-121440",
+    "timestamp": "2026-07-02 12:14:40",
+    "topic": "Happy Numbers",
+    "category": "Algorithms",
+    "explanation": "## What is it? \nA happy number is a number that eventually reaches 1 when repeatedly replaced by the sum of the squares of its digits. This process forms a cycle that eventually terminates. \n\n## How does it work? \nThe process involves checking if the number is already in a seen set. If not, add it and compute the new value. This mimics the behavior of a recursive process, where each number influences the next step. \n\n## Common use cases \n1. Mathematical puzzles for testing number theory. 2. Cryptographic algorithms for detecting cycles. 3. Computer science problem-solving for validating sequences. \n\n## Common mistakes \nBeginners often fail to check for the loop condition or miss checking for the final value. Edge cases include perfect squares and non-integer inputs. \n\n## How it appears in your solution \nThe function `is_happy(n)` uses a set to track seen numbers and a loop to simulate the process. It returns true if the number eventually reaches 1, otherwise returns false.",
+    "related_kata": "Happy numbers",
+    "related_kata_id": ""
+  }
+]

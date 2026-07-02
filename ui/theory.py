@@ -182,7 +182,7 @@ class TheoryPage(ctk.CTkFrame):
     def _build_topic_card(self, topic: dict) -> ctk.CTkFrame:
         colors = CATEGORY_COLORS.get(topic["category"], CATEGORY_COLORS["Other"])
         explanation = topic.get("explanation", "")
-        is_long = len(explanation) > 180
+        is_expanded = topic["id"] in self.expanded_cards
 
         card = ctk.CTkFrame(self.feed_frame, corner_radius=10, fg_color="gray17")
 
@@ -191,110 +191,128 @@ class TheoryPage(ctk.CTkFrame):
         accent.pack(side="left", fill="y")
         accent.pack_propagate(False)
 
-        # main content
         inner = ctk.CTkFrame(card, fg_color="transparent")
         inner.pack(side="left", fill="both", expand=True, padx=12, pady=10)
 
-        # ── top row ───────────────────────────────────────────────────────────
+        # ── top row ───────────────────────────────────────────────────────────────
         top = ctk.CTkFrame(inner, fg_color="transparent")
         top.pack(fill="x")
 
         ctk.CTkLabel(
             top, text=topic["topic"],
-            font=ctk.CTkFont(size=14, weight="bold"),
-            anchor="w"
+            font=ctk.CTkFont(size=14, weight="bold"), anchor="w"
         ).pack(side="left", padx=(0, 8))
 
         ctk.CTkLabel(
-            top,
-            text=f"  {topic['category']}  ",
+            top, text=f"  {topic['category']}  ",
             font=ctk.CTkFont(size=11),
-            fg_color=colors["bg"],
-            text_color=colors["fg"],
+            fg_color=colors["bg"], text_color=colors["fg"],
             corner_radius=99,
         ).pack(side="left")
 
-        # timestamp
         day_date = datetime.strptime(topic["timestamp"][:10], "%Y-%m-%d").date()
         delta = (date.today() - day_date).days
-        if delta == 0:
-            time_str = "Today"
-        elif delta == 1:
-            time_str = "Yesterday"
-        else:
-            time_str = f"{delta} days ago"
+        time_str = "Today" if delta == 0 else "Yesterday" if delta == 1 else f"{delta} days ago"
 
         ctk.CTkLabel(
             top, text=time_str,
             font=ctk.CTkFont(size=11), text_color="gray50"
         ).pack(side="right", padx=(8, 0))
 
-        # delete button
         ctk.CTkButton(
-            top, text="✕",
-            width=24, height=24,
-            fg_color="transparent",
-            hover_color="gray25",
-            text_color="gray50",
-            font=ctk.CTkFont(size=11),
+            top, text="✕", width=24, height=24,
+            fg_color="transparent", hover_color="gray25",
+            text_color="gray50", font=ctk.CTkFont(size=11),
             command=lambda t=topic: self._delete_topic(t)
         ).pack(side="right")
 
-        # ── explanation ───────────────────────────────────────────────────────
-        preview = explanation[:180] + "..." if is_long else explanation
+        # ── explanation ───────────────────────────────────────────────────────────
+        explanation_frame = ctk.CTkFrame(inner, fg_color="transparent")
+        explanation_frame.pack(fill="x", pady=(8, 0))
 
-        explanation_label = ctk.CTkLabel(
-            inner,
-            text=preview,
-            font=ctk.CTkFont(size=13),
-            text_color="gray70",
-            wraplength=440,
-            justify="left",
-            anchor="w"
-        )
-        explanation_label.pack(anchor="w", pady=(6, 0))
+        if is_expanded:
+            self._render_explanation(explanation_frame, explanation)
+        else:
+            # show plain preview without parsing sections
+            preview = explanation.replace("##", "").strip()
+            preview = preview[:200] + "..." if len(preview) > 200 else preview
+            ctk.CTkLabel(
+                explanation_frame, text=preview,
+                font=ctk.CTkFont(size=13), text_color="gray70",
+                wraplength=440, justify="left", anchor="w"
+            ).pack(anchor="w")
 
-        # ── footer ────────────────────────────────────────────────────────────
+        # ── footer ────────────────────────────────────────────────────────────────
         footer = ctk.CTkFrame(inner, fg_color="transparent")
-        footer.pack(fill="x", pady=(6, 0))
+        footer.pack(fill="x", pady=(8, 0))
 
         if topic.get("related_kata"):
             ctk.CTkLabel(
-                footer,
-                text=f"↳  {topic['related_kata']}",
-                font=ctk.CTkFont(size=11),
-                text_color="#534AB7"
+                footer, text=f"↳  {topic['related_kata']}",
+                font=ctk.CTkFont(size=11), text_color="#534AB7"
             ).pack(side="left")
 
-        if is_long:
-            expand_btn = ctk.CTkButton(
-                footer,
-                text="Read more ↓",
-                width=90, height=22,
-                fg_color="transparent",
-                text_color="#534AB7",
-                hover_color="gray20",
-                font=ctk.CTkFont(size=11),
-            )
-            expand_btn.configure(
-                command=lambda t=topic, lbl=explanation_label, btn=expand_btn, exp=explanation:
-                    self._toggle_expand(t, lbl, btn, exp)
-            )
-            expand_btn.pack(side="right")
+        expand_btn = ctk.CTkButton(
+            footer,
+            text="Show less ↑" if is_expanded else "Read more ↓",
+            width=100, height=22,
+            fg_color="transparent", text_color="#534AB7",
+            hover_color="gray20", font=ctk.CTkFont(size=11),
+            command=lambda t=topic, ef=explanation_frame, exp=explanation:
+                self._toggle_expand(t, ef, exp)
+        )
+        expand_btn.pack(side="right")
 
         return card
 
-    # ── Expand / collapse ─────────────────────────────────────────────────────
 
-    def _toggle_expand(self, topic, label, btn, full_text):
+    def _render_explanation(self, parent: ctk.CTkFrame, explanation: str):
+        sections = explanation.split("##")
+        for section in sections:
+            section = section.strip()
+            if not section:
+                continue
+
+            lines = section.split("\n", 1)
+            header = lines[0].strip()
+            body = lines[1].strip() if len(lines) > 1 else ""
+
+            if header:
+                ctk.CTkLabel(
+                    parent, text=header,
+                    font=ctk.CTkFont(size=13, weight="bold"),
+                    text_color="#AFA9EC", anchor="w"
+                ).pack(anchor="w", pady=(10, 2))
+
+            if body:
+                ctk.CTkLabel(
+                    parent, text=body,
+                    font=ctk.CTkFont(size=13), text_color="gray70",
+                    wraplength=440, justify="left", anchor="w"
+                ).pack(anchor="w")
+
+
+    def _toggle_expand(self, topic, explanation_frame, full_explanation):
         if topic["id"] in self.expanded_cards:
             self.expanded_cards.remove(topic["id"])
-            label.configure(text=full_text[:180] + "...")
-            btn.configure(text="Read more ↓")
+            # replace with preview
+            for widget in explanation_frame.winfo_children():
+                widget.destroy()
+            preview = full_explanation.replace("##", "").strip()
+            preview = preview[:200] + "..." if len(preview) > 200 else preview
+            ctk.CTkLabel(
+                explanation_frame, text=preview,
+                font=ctk.CTkFont(size=13), text_color="gray70",
+                wraplength=440, justify="left", anchor="w"
+            ).pack(anchor="w")
         else:
             self.expanded_cards.add(topic["id"])
-            label.configure(text=full_text)
-            btn.configure(text="Show less ↑")
+            for widget in explanation_frame.winfo_children():
+                widget.destroy()
+            self._render_explanation(explanation_frame, full_explanation)
+
+        # update the button text
+        self._rebuild_feed(self._get_current_topics())
 
     # ── Delete ────────────────────────────────────────────────────────────────
 

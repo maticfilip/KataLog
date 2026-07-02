@@ -82,23 +82,44 @@ def parse_json_response(raw:str):
 
 
 def explain_topic(kata_name, difficulty, description, code, on_complete, on_error=None):
-    prompt = f"""You are a coding mentor. A student just completed this Codewars kata:
+    prompt = f"""You are an experienced software engineering mentor writing reference material for a developer learning platform.
 
-    Kata: {kata_name} ({difficulty})
-    Description: {description}
-    Their solution:
-    {code}
+A student just solved this Codewars kata:
 
-    Do two things:
-    1. Explain the key theoretical concept behind this kata in 2-3 paragraphs, suitable for a beginner-intermediate developer.
-    2. Categorize it.
+Kata: {kata_name} ({difficulty})
+Description: {description}
+Their solution:
+{code}
 
-    Respond ONLY in this exact JSON format, with no other text before or after:
-    {{
-    "topic": "short topic name, 2-4 words",
-    "category": "one of: Algorithms, Data Structures, String Manipulation, Mathematics, Language Features, Other",
-    "explanation": "your full explanation here"
-    }}"""
+Use this kata only as context to identify the underlying topic. Then write a general, reusable explanation of that topic — not about this specific kata.
+
+Structure your explanation exactly like this, using these exact section headers:
+
+## What is it?
+Define the concept clearly from first principles. Assume the student has a basic programming background but has never studied this topic formally.
+
+## How does it work?
+Explain the mechanics and intuition. Use a simple analogy if it helps. Focus on the "why" not just the "what".
+
+## Common use cases
+Describe 2-3 real-world situations where this concept is commonly applied. Be concrete and practical.
+
+## Common mistakes
+What do beginners typically get wrong with this concept? What edge cases trip people up?
+
+## How it appears in your solution
+Briefly connect the theory back to the student's specific code. Point out exactly where and how the concept is used.
+
+Write each section in 2-4 sentences minimum. Use plain prose within each section — no nested bullet points. Keep it educational, clear, and encouraging.
+
+Then categorize the overall topic.
+
+Respond ONLY in this exact JSON format, no other text:
+{{
+  "topic": "short topic name, 2-4 words",
+  "category": "one of: Algorithms, Data Structures, String Manipulation, Mathematics, Language Features, Other",
+  "explanation": "your full explanation with ## headers included, sections separated by double newlines"
+}}"""
 
     def handle_raw(raw: str):
         on_complete(parse_json_response(raw))

@@ -30,7 +30,7 @@ def save(entries):
     with open(THEORY_FILE,"w") as f:
         json.dump(entries, f, indent=2)
 
-def add_topic(topic, category, explanation, related_kata, related_kata_id):
+def add_topic(topic: str, category: str, explanation: str, related_kata: str = "", related_kata_id: str = "") -> dict:
     entries=load()
     entry={
         "id":datetime.now().strftime("%Y%m%d-%H%M%S"),
